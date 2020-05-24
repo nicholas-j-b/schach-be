@@ -11,7 +11,7 @@ class GameService {
     fun allocateToGame(gameId: String): InitialMessage {
         //TODO("at the moment a new game is created every time with a player assigned to white")
         val game = GameCollection.addGame(gameId)
-        val colour = Colour.WHITE
+        val colour = Colour.white
         val connectionId = getConnectionIdFromGameId(gameId, colour)
         game.addPlayer(connectionId, colour)
         return InitialMessage(gameId, colour, connectionId)
