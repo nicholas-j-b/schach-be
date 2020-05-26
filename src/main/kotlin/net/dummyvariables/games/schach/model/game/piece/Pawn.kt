@@ -1,17 +1,30 @@
 package net.dummyvariables.games.schach.model.game.piece
 
 import net.dummyvariables.games.schach.model.game.Colour
+import net.dummyvariables.games.schach.model.game.Direction
 import net.dummyvariables.games.schach.model.game.Move
 import net.dummyvariables.games.schach.model.game.Position
+import net.dummyvariables.games.schach.service.EntityManagementService
 
 class Pawn(
        override val colour: Colour,
-       override val id: Int
+       override val id: Int,
+       override val entityManagementService: EntityManagementService
 ) : Piece() {
     override val pieceName = "pawn"
     override val startingAmount = 8
     override val position: Position = if (colour == Colour.black) Position(id, 1) else Position(id, 6)
+
+    private var hasMoved = false
+
     override fun getLegalMoves(): List<Move> {
-        return listOf(Move(position, Position(4, 4)))
+        val limit = if (hasMoved) 1 else 2
+        val legalMoveDestinations = getLegalPositionsRay(position, getForward(position), limit)
+        //TODO("diagonal take availabilities")
+        return legalMoveDestinations.map { position -> Move(this.position, position)}
+    }
+
+    fun getForward(position: Position): Direction {
+        return if (colour == Colour.black) Direction(0, 1) else Direction(0, -1)
     }
 }

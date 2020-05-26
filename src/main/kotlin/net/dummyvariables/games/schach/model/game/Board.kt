@@ -1,8 +1,11 @@
 package net.dummyvariables.games.schach.model.game
 
 import net.dummyvariables.games.schach.model.game.piece.*
+import net.dummyvariables.games.schach.service.EntityManagementService
 
-class Board() {
+class Board(
+        val entityManagementService: EntityManagementService
+) {
     companion object {
         val pieceTypes = listOf(
                 King::class,
@@ -14,23 +17,15 @@ class Board() {
         ).map { it.constructors.first() }
     }
 
-//    private val pieceMatrix: Array<Array<Piece?>> = Array(8) {
-//        Array(8) {
-//            null
-//        }
-//    }
-    //private val pieceMatrix = arrayOf<Array<Piece?>>()
-    private val pieceMatrix = Array(size = 8) { Array<Piece?>(size = 8) { null } }
-
     val pieces = mutableListOf<Piece>()
 
     init {
         pieceTypes.forEach {cls ->
             Colour.values().forEach { colour ->
-                val piece = cls.call(colour, 0)
+                val piece = cls.call(colour, 0, entityManagementService)
                 addPiece(piece)
                 for (id in 1 until piece.startingAmount) {
-                    addPiece(cls.call(colour, id))
+                    addPiece(cls.call(colour, id, entityManagementService))
                 }
             }
         }
@@ -38,7 +33,7 @@ class Board() {
 
     private fun addPiece(piece: Piece) {
         pieces.add(piece)
-        pieceMatrix[piece.position.x][piece.position.y] = piece
+        entityManagementService.addPieceToBoard(piece)
     }
 
     fun getLegalMoves(): List<Move> {
