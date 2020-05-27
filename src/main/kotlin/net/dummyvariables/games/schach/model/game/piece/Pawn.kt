@@ -13,18 +13,21 @@ class Pawn(
 ) : Piece() {
     override val pieceName = "pawn"
     override val startingAmount = 8
-    override val position: Position = if (colour == Colour.black) Position(id, 1) else Position(id, 6)
+    override var position: Position = if (colour == Colour.black) Position(id, 1) else Position(id, 6)
 
-    private var hasMoved = false
+    var hasMoved = false
+        set(moved) {
+            field = true
+        }
 
     override fun getLegalMoves(): List<Move> {
         val limit = if (hasMoved) 1 else 2
-        val legalMoveDestinations = getLegalPositionsRay(position, getForward(position), limit)
+        val legalMoveDestinations = getLegalPositionsRay(position, getForward(), limit)
         //TODO("diagonal take availabilities")
         return legalMoveDestinations.map { position -> Move(this.position, position)}
     }
 
-    fun getForward(position: Position): Direction {
+    fun getForward(): Direction {
         return if (colour == Colour.black) Direction(0, 1) else Direction(0, -1)
     }
 }

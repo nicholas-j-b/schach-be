@@ -12,7 +12,7 @@ class Bishop(
 ) : Piece() {
     override val pieceName = "bishop"
     override val startingAmount = 2
-    override val position: Position = if (colour == Colour.black) Position(2 + id * 3, 0) else Position(2 + id * 3, 7)
+    override var position: Position = if (colour == Colour.black) Position(2 + id * 3, 0) else Position(2 + id * 3, 7)
     override fun getLegalMoves(): List<Move> {
         return emptyList()
     }

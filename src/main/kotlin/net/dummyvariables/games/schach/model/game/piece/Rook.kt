@@ -12,7 +12,7 @@ class Rook(
 ) : Piece() {
     override val pieceName = "rook"
     override val startingAmount = 2
-    override val position: Position = if (colour == Colour.black) Position(id * 7, 0) else Position(id * 7, 7)
+    override var position: Position = if (colour == Colour.black) Position(id * 7, 0) else Position(id * 7, 7)
     override fun getLegalMoves(): List<Move> {
         return emptyList()
     }

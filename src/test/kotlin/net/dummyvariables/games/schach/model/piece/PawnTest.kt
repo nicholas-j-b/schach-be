@@ -1,6 +1,7 @@
 package net.dummyvariables.games.schach.model.piece
 
 import net.dummyvariables.games.schach.model.game.Colour
+import net.dummyvariables.games.schach.model.game.Move
 import net.dummyvariables.games.schach.model.game.Position
 import net.dummyvariables.games.schach.model.game.piece.Pawn
 import net.dummyvariables.games.schach.model.util.BoardBuilder
@@ -17,6 +18,7 @@ import java.util.stream.Stream
 class PawnTest {
     companion object {
         val DEFAULT_COLOUR = Colour.black
+        val DEFAULT_ID = 0
 
         @JvmStatic
         fun `legal starting moves`(): Stream<Arguments> {
@@ -56,7 +58,40 @@ class PawnTest {
         }
     }
 
+    @Test
+    fun `pawn moves on empty board`() {
+        val startingPosition = Position(5, 5)
+        val (pawn, expectedEndPosition) = getPawnAndEndPositionOnEmptyBoard(DEFAULT_COLOUR, startingPosition)
+
+        val legalMoves = pawn.getLegalMoves()
+
+        assertThat(legalMoves.size).isEqualTo(1)
+        val expectedMove = Move(startingPosition, expectedEndPosition)
+        assertThat(expectedMove).isEqualTo(legalMoves.first())
+    }
+
+
+//    @Test
+//    fun `pawn promotes to queen in last row`() {
+//        val startingPosition = Position(4, 6)
+//        val (pawn, expectedEndPosition) = getPawnAndEndPositionOnEmptyBoard(Colour.black, startingPosition)
+//
+//        val
+//    }
+
     //TODO("take pieces")
     //TODO("piece promotion")
     //TODO("disallow self discovering check")
+
+
+    private fun getPawnAndEndPositionOnEmptyBoard(colour: Colour, startingPosition: Position): Pair<Pawn, Position> {
+        val board = BoardBuilder.getEmptyBoard()
+        val pawn = Pawn(colour, 0, EntityManagementService())
+        val direction = pawn.getForward()
+        val expectedEndPosition = direction.getNextPosition(startingPosition)
+        pawn.position = startingPosition
+        pawn.hasMoved = true
+        board.addPiece(pawn)
+        return Pair(pawn, expectedEndPosition)
+    }
 }

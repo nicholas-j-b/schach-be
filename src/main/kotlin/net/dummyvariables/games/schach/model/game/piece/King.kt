@@ -12,7 +12,7 @@ class King(
 ) : Piece() {
     override val pieceName = "king"
     override val startingAmount = 1
-    override val position: Position = if (colour == Colour.black) Position(4, 0) else Position(4, 7)
+    override var position: Position = if (colour == Colour.black) Position(4, 0) else Position(4, 7)
     override fun getLegalMoves(): List<Move> {
         return emptyList()
     }

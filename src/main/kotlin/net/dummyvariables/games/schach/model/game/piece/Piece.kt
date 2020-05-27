@@ -11,7 +11,7 @@ abstract class Piece {
     abstract val id: Int
     abstract val entityManagementService: EntityManagementService
     abstract val pieceName: String
-    abstract val position: Position
+    abstract var position: Position
     abstract val startingAmount: Int
     abstract fun getLegalMoves(): List<Move>
 
