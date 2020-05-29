@@ -13,6 +13,10 @@ class Bishop(
     override val pieceName = "bishop"
     override val startingAmount = 2
     override var position: Position = if (colour == Colour.black) Position(2 + id * 3, 0) else Position(2 + id * 3, 7)
+    override fun move(to: Position) {
+        TODO("Not yet implemented")
+    }
+
     override fun getLegalMoves(): List<Move> {
         return emptyList()
     }

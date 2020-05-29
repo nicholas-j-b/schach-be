@@ -1,6 +1,5 @@
 package net.dummyvariables.games.schach.model.game
 
-import net.dummyvariables.games.schach.model.game.piece.*
 import net.dummyvariables.games.schach.service.EntityManagementService
 
 class Board(

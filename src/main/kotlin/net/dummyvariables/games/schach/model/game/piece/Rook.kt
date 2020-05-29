@@ -13,6 +13,10 @@ class Rook(
     override val pieceName = "rook"
     override val startingAmount = 2
     override var position: Position = if (colour == Colour.black) Position(id * 7, 0) else Position(id * 7, 7)
+    override fun move(to: Position) {
+        TODO("Not yet implemented")
+    }
+
     override fun getLegalMoves(): List<Move> {
         return emptyList()
     }

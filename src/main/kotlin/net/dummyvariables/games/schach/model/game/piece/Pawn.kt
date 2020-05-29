@@ -20,6 +20,11 @@ class Pawn(
             field = true
         }
 
+    override fun move(to: Position) {
+        position = to
+        hasMoved = true
+    }
+
     override fun getLegalMoves(): List<Move> {
         val limit = if (hasMoved) 1 else 2
         val legalMoveDestinations = getLegalPositionsRay(position, getForward(), limit)

@@ -13,6 +13,7 @@ abstract class Piece {
     abstract val pieceName: String
     abstract var position: Position
     abstract val startingAmount: Int
+    abstract fun move(to: Position)
     abstract fun getLegalMoves(): List<Move>
 
     fun getLegalPositionsRay(startingPosition: Position, direction: Direction, limit: Int?): List<Position> {

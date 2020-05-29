@@ -13,6 +13,10 @@ class King(
     override val pieceName = "king"
     override val startingAmount = 1
     override var position: Position = if (colour == Colour.black) Position(4, 0) else Position(4, 7)
+    override fun move(to: Position) {
+        TODO("Not yet implemented")
+    }
+
     override fun getLegalMoves(): List<Move> {
         return emptyList()
     }
