@@ -1,6 +1,7 @@
 package net.dummyvariables.games.schach.model.game
 
 import net.dummyvariables.games.schach.model.game.piece.*
+import net.dummyvariables.games.schach.model.message.legalMoves.MoveCollectionDto
 import net.dummyvariables.games.schach.service.EntityManagementService
 
 open class EmptyBoard (
@@ -18,16 +19,25 @@ open class EmptyBoard (
     }
 
     val pieces = mutableListOf<Piece>()
+    var currentColour = Colour.white
+
+    fun newTurn(): Colour {
+        val nextColour = if (currentColour == Colour.white) Colour.black else Colour.white
+        currentColour = nextColour
+        return nextColour
+    }
 
     fun addPiece(piece: Piece) {
         pieces.add(piece)
         entityManagementService.addPieceToBoard(piece)
     }
 
-    fun getLegalMoves(): List<Move> {
-        val moves = mutableListOf<Move>()
+    fun getLegalMoves(): List<MoveCollectionDto> {
+        val moves = mutableListOf<MoveCollectionDto>()
         pieces.forEach {piece ->
-            moves += piece.getLegalMoves()
+            if (piece.colour == currentColour) {
+                moves += piece.getLegalMoves()
+            }
         }
         return moves
     }

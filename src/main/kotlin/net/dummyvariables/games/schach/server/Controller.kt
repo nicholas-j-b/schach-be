@@ -19,10 +19,17 @@ class Controller(
         return "hello World"
     }
 
-    @RequestMapping("/board/getConnection")
-    fun getWebSocketConnection(): String {
+    @RequestMapping("/game/create")
+    fun createGame(): String {
         val gameId = connectionService.getNewGameId()
-        val message = gameService.allocateToGame(gameId)
+        val message = gameService.createGameAndAllocate(gameId)
+        return messageService.asJson(message)
+    }
+
+    @RequestMapping("/game/join")
+    fun getWebSocketConnection(): String {
+        val gameId = connectionService.getExistingId()
+        val message = gameService.allocateToExistingGame(gameId)
         return messageService.asJson(message)
     }
 }

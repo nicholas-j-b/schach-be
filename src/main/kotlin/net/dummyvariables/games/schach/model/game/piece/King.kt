@@ -3,6 +3,7 @@ package net.dummyvariables.games.schach.model.game.piece
 import net.dummyvariables.games.schach.model.game.Colour
 import net.dummyvariables.games.schach.model.game.Move
 import net.dummyvariables.games.schach.model.game.Position
+import net.dummyvariables.games.schach.model.message.legalMoves.MoveCollectionDto
 import net.dummyvariables.games.schach.service.EntityManagementService
 
 class King(
@@ -14,10 +15,16 @@ class King(
     override val startingAmount = 1
     override var position: Position = if (colour == Colour.black) Position(4, 0) else Position(4, 7)
     override fun move(to: Position) {
-        TODO("Not yet implemented")
+        position = to
     }
 
-    override fun getLegalMoves(): List<Move> {
-        return emptyList()
+    override fun getLegalMoves(): MoveCollectionDto {
+        return MoveCollectionDto(position,
+                (RookDirections.directions + BishopDirections.directions).flatMap {
+                    getLegalPositionsRay(position, it, 1)
+                }.map {
+                    it
+                }
+        )
     }
 }

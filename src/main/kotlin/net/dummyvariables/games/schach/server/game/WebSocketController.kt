@@ -1,5 +1,7 @@
 package net.dummyvariables.games.schach.server.game
 
+import net.dummyvariables.games.schach.model.game.Board
+import net.dummyvariables.games.schach.model.game.Colour
 import net.dummyvariables.games.schach.model.message.legalMoves.LegalMovesMessageBuilder
 import net.dummyvariables.games.schach.model.message.pieces.PieceMessageBuilder
 import net.dummyvariables.games.schach.service.GameService
@@ -33,12 +35,32 @@ class WebSocketController(
     @MessageMapping("/{connectionId}/movement")
     fun receiveMovement(@DestinationVariable connectionId: String, @Payload msg: String) {
         val board = gameService.getBoard(connectionId)
+        val colourJustMoved = Colour.stringToEnum(gameService.getColourFromConnectionId(connectionId))
+        if (colourJustMoved == gameService.waitingOnColour(board)) {
+            move(msg, board)
+            val (pieceString, legalString, altConnectionId) = generateMessageInfo(connectionId, board)
+            notifyClients(connectionId, pieceString, altConnectionId, legalString)
+        }
+    }
+
+    private fun move(msg: String, board: Board) {
         val moveDto = messageService.moveDtoFromJson(msg)
         movementService.move(moveDto, board)
+    }
+
+    private fun notifyClients(connectionId: String, pieceString: String, altConnectionId: String, legalString: String) {
+        simpMessagingTemplate.convertAndSend("/down/$connectionId/pieces", pieceString)
+        simpMessagingTemplate.convertAndSend("/down/$altConnectionId/pieces", pieceString)
+        simpMessagingTemplate.convertAndSend("/down/$altConnectionId/legalMoves", legalString)
+    }
+
+    private fun generateMessageInfo(connectionId: String, board: Board): Triple<String, String, String> {
         val pieceString = genPieceMessage(connectionId)
         val legalString = genLegalMovesMessage(connectionId)
-        simpMessagingTemplate.convertAndSend("/down/$connectionId/pieces", pieceString)
-        simpMessagingTemplate.convertAndSend("/down/$connectionId/legalMoves", legalString)
+        val gameId = gameService.getGameIdFromConnectionId(connectionId)
+        val nextColour = gameService.setNextColourTurn(board)
+        val altConnectionId = gameService.getConnectionIdFromGameId(gameId, nextColour)
+        return Triple(pieceString, legalString, altConnectionId)
     }
 
     fun genPieceMessage(connectionId: String): String {

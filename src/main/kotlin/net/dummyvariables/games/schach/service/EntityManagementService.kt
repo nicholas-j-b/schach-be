@@ -2,6 +2,7 @@ package net.dummyvariables.games.schach.service
 
 import net.dummyvariables.games.schach.model.game.Colour
 import net.dummyvariables.games.schach.model.game.Position
+import net.dummyvariables.games.schach.model.game.SquareOccupancyType
 import net.dummyvariables.games.schach.model.game.piece.Piece
 import net.dummyvariables.games.schach.model.message.legalMoves.MoveDto
 
@@ -17,7 +18,10 @@ class EntityManagementService {
         pieceMatrix[moveDto.from.x][moveDto.from.y] = null
     }
 
-    fun checkSquareOccupied(position: Position): Colour? {
-        return pieceMatrix[position.x][position.y]?.colour
+    fun checkSquareOccupancyType(position: Position): SquareOccupancyType {
+        val isOccupied = pieceMatrix.elementAtOrNull(position.x)?.elementAtOrNull(position.y) != null
+        val isSquare = position.x in 0..7 && position.y in 0..7
+        val colour = pieceMatrix.elementAtOrNull(position.x)?.elementAtOrNull(position.y)?.colour
+        return SquareOccupancyType(isOccupied, isSquare, colour)
     }
 }

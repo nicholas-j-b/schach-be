@@ -70,7 +70,6 @@ class PawnTest {
         assertThat(expectedMove).isEqualTo(legalMoves.first())
     }
 
-
 //    @Test
 //    fun `pawn promotes to queen in last row`() {
 //        val startingPosition = Position(4, 6)
