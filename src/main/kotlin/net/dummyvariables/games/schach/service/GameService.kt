@@ -5,10 +5,16 @@ import net.dummyvariables.games.schach.model.game.Colour
 import net.dummyvariables.games.schach.model.game.Game
 import net.dummyvariables.games.schach.model.game.GameCollection
 import net.dummyvariables.games.schach.model.message.InitialMessage
+import net.dummyvariables.games.schach.model.message.game.GameInfoDto
 import org.springframework.stereotype.Service
 
 @Service
 class GameService {
+    fun getAllGamesAsDtos(): List<GameInfoDto> {
+        return GameCollection.games.map {
+            it.value.toDto(it.key)
+        }
+    }
     fun createGameAndAllocate(gameId: String): InitialMessage {
         val game = GameCollection.addGame(gameId)
         return allocatePlayerToGame(gameId, game, Colour.white)

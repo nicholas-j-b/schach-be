@@ -19,6 +19,7 @@ class MovementService {
     }
 
     private fun getPieceToMove(board: Board, moveDto: MoveDto): Piece {
+        //TODO("this sometimes fails although the piece is moved correctly?")
         return board.pieces.first {
             it.position == moveDto.from
         }

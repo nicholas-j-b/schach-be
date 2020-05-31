@@ -1,5 +1,6 @@
 package net.dummyvariables.games.schach.model.game
 
+import net.dummyvariables.games.schach.model.message.game.GameInfoDto
 import net.dummyvariables.games.schach.service.EntityManagementService
 
 class Game(
@@ -10,5 +11,9 @@ class Game(
 
     fun addPlayer(connectionId: String, colour: Colour) {
         players.add(Player(connectionId, colour))
+    }
+
+    fun toDto(gameId: String): GameInfoDto {
+        return GameInfoDto(gameId, players.map { it.connectionId })
     }
 }

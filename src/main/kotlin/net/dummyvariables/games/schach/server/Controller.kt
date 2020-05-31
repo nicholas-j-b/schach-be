@@ -4,6 +4,7 @@ import net.dummyvariables.games.schach.service.ConnectionService
 import net.dummyvariables.games.schach.service.GameService
 import net.dummyvariables.games.schach.service.MessageService
 import org.springframework.web.bind.annotation.CrossOrigin
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -14,9 +15,10 @@ class Controller(
         private val messageService: MessageService,
         private val gameService: GameService
 ) {
-    @RequestMapping("/test")
-    fun test(): String {
-        return "hello World"
+    @RequestMapping("/lobby/games")
+    fun getGames(): String {
+        val message = gameService.getAllGamesAsDtos()
+        return messageService.asJson(message)
     }
 
     @RequestMapping("/game/create")
@@ -26,10 +28,14 @@ class Controller(
         return messageService.asJson(message)
     }
 
-    @RequestMapping("/game/join")
-    fun getWebSocketConnection(): String {
-        val gameId = connectionService.getExistingId()
+    @RequestMapping("/game/join/{gameId}")
+    fun joinGame(@PathVariable("gameId") gameId: String): String {
         val message = gameService.allocateToExistingGame(gameId)
         return messageService.asJson(message)
+    }
+
+    @RequestMapping("/game/spectate")
+    fun spectateGame(): String {
+        TODO("not yet implemented")
     }
 }
