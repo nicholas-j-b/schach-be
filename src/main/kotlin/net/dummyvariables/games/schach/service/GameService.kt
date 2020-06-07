@@ -7,6 +7,7 @@ import net.dummyvariables.games.schach.model.game.GameCollection
 import net.dummyvariables.games.schach.model.message.InitialMessage
 import net.dummyvariables.games.schach.model.message.game.GameInfoDto
 import org.springframework.stereotype.Service
+import kotlin.random.Random
 
 @Service
 class GameService {
@@ -17,12 +18,15 @@ class GameService {
     }
     fun createGameAndAllocate(gameId: String): InitialMessage {
         val game = GameCollection.addGame(gameId)
-        return allocatePlayerToGame(gameId, game, Colour.white)
+//        val colour = if (Random.nextBoolean()) Colour.black else Colour.white
+        val colour = Colour.white
+        return allocatePlayerToGame(gameId, game, colour)
     }
 
     fun allocateToExistingGame(gameId: String): InitialMessage {
         val game = GameCollection.games[gameId] ?: throw Exception("no game found")
-        return allocatePlayerToGame(gameId, game, Colour.black)
+        val colour = game.getFreeColour()
+        return allocatePlayerToGame(gameId, game, colour)
     }
 
     private fun allocatePlayerToGame(gameId: String, game: Game, colour: Colour): InitialMessage {
@@ -43,6 +47,19 @@ class GameService {
     fun setNextColourTurn(board: Board): Colour {
         return board.newTurn()
     }
+
+    fun getWhiteConnectionId(connectionId: String) = getOppositeConnectionId(Colour.black, connectionId)
+
+    fun getBlackConnectionId(connectionId: String) = getOppositeConnectionId(Colour.white, connectionId)
+
+    fun getOppositeConnectionId(colour: Colour, connectionId: String): String {
+        val gameId = getGameIdFromConnectionId(connectionId)
+        val otherColour = Colour.getOtherColour(colour)
+        return getConnectionIdFromGameId(gameId, otherColour)
+    }
+
+    fun getGameFromConnectionId(connectionId: String) =
+            GameCollection.games[getGameIdFromConnectionId(connectionId)] ?: throw Exception("no game found")
 
     fun getColourFromConnectionId(connectionId: String) = connectionId.split("-")[1]
 

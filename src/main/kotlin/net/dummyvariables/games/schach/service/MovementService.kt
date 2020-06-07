@@ -4,6 +4,7 @@ import net.dummyvariables.games.schach.model.game.Board
 import net.dummyvariables.games.schach.model.game.piece.Piece
 import net.dummyvariables.games.schach.model.message.legalMoves.MoveDto
 import org.springframework.stereotype.Service
+import kotlin.random.Random
 
 @Service
 class MovementService {
@@ -20,6 +21,8 @@ class MovementService {
 
     private fun getPieceToMove(board: Board, moveDto: MoveDto): Piece {
         //TODO("this sometimes fails although the piece is moved correctly?")
+        //TODO("sometimes a random other piece is taken")
+        val a = Random.nextBoolean()
         return board.pieces.first {
             it.position == moveDto.from
         }

@@ -8,6 +8,8 @@ enum class Colour {
                 it.toString() == s
             }
         }
+
+        fun getOtherColour(colour: Colour): Colour = if (colour == white) black else white
     }
 
 }

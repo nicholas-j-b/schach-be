@@ -26,10 +26,17 @@ class WebSocketController(
 
     @MessageMapping("/{connectionId}/init")
     fun initConnection(@DestinationVariable connectionId: String, @Payload msg: String) {
-        val pieceString = genPieceMessage(connectionId)
-        val legalString = genLegalMovesMessage(connectionId)
-        simpMessagingTemplate.convertAndSend("/down/$connectionId/pieces", pieceString)
-        simpMessagingTemplate.convertAndSend("/down/$connectionId/legalMoves", legalString)
+        val game = gameService.getGameFromConnectionId(connectionId)
+        game.registerPlayerReady(connectionId)
+        if (game.areBothPlayersReady()) {
+            val whiteConnectionId = gameService.getWhiteConnectionId(connectionId)
+            val blackConnectionId = gameService.getBlackConnectionId(connectionId)
+            val pieceString = genPieceMessage(whiteConnectionId)
+            val legalString = genLegalMovesMessage(whiteConnectionId)
+            simpMessagingTemplate.convertAndSend("/down/$whiteConnectionId/pieces", pieceString)
+            simpMessagingTemplate.convertAndSend("/down/$blackConnectionId/pieces", pieceString)
+            simpMessagingTemplate.convertAndSend("/down/$whiteConnectionId/legalMoves", legalString)
+        }
     }
 
     @MessageMapping("/{connectionId}/movement")
