@@ -32,10 +32,12 @@ class WebSocketController(
             val whiteConnectionId = gameService.getWhiteConnectionId(connectionId)
             val blackConnectionId = gameService.getBlackConnectionId(connectionId)
             val pieceString = genPieceMessage(whiteConnectionId)
-            val legalString = genLegalMovesMessage(whiteConnectionId)
+            val whiteLegalString = genLegalMovesMessage(whiteConnectionId)
+            val blackLegalString = genEmptyLegalMovesMessage()
             simpMessagingTemplate.convertAndSend("/down/$whiteConnectionId/pieces", pieceString)
             simpMessagingTemplate.convertAndSend("/down/$blackConnectionId/pieces", pieceString)
-            simpMessagingTemplate.convertAndSend("/down/$whiteConnectionId/legalMoves", legalString)
+            simpMessagingTemplate.convertAndSend("/down/$whiteConnectionId/legalMoves", whiteLegalString)
+            simpMessagingTemplate.convertAndSend("/down/$blackConnectionId/legalMoves", blackLegalString)
         }
     }
 
@@ -63,9 +65,9 @@ class WebSocketController(
 
     private fun generateMessageInfo(connectionId: String, board: Board): Triple<String, String, String> {
         val pieceString = genPieceMessage(connectionId)
-        val legalString = genLegalMovesMessage(connectionId)
         val gameId = gameService.getGameIdFromConnectionId(connectionId)
         val nextColour = gameService.setNextColourTurn(board)
+        val legalString = genLegalMovesMessage(connectionId)
         val altConnectionId = gameService.getConnectionIdFromGameId(gameId, nextColour)
         return Triple(pieceString, legalString, altConnectionId)
     }
@@ -83,6 +85,11 @@ class WebSocketController(
         val legalMovesMessage = legalMovesMessageBuilder.fromLegalMoves(legalMoves)
         println(connectionId)
         println(legalMoves)
+        return messageService.asJson(legalMovesMessage)
+    }
+
+    fun genEmptyLegalMovesMessage(): String {
+        val legalMovesMessage = legalMovesMessageBuilder.fromLegalMoves(emptyList())
         return messageService.asJson(legalMovesMessage)
     }
 

@@ -19,9 +19,9 @@ abstract class Piece {
 
     fun getLegalPositionsRay(startingPosition: Position, direction: Direction, limit: Int? = null, take: Boolean = true): List<Position> {
         val legalMoveDestinations = mutableListOf<Position>()
-        var positionToTest = startingPosition
+        var positionToTest  = startingPosition
         loop@ for (i in 0 until (limit ?: 8)) {
-            positionToTest = direction.getNextPosition(positionToTest)
+            positionToTest = direction.getNextPosition(positionToTest) ?: break@loop
             val occupancy = entityManagementService.checkSquareOccupancyType(positionToTest)
             when {
                 occupancy.isSquare && !occupancy.isOccupied -> legalMoveDestinations.add(positionToTest)

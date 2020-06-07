@@ -35,6 +35,6 @@ class Knight(
     }
 
     override fun getLegalMoves(): MoveCollectionDto {
-        return MoveCollectionDto(position, KnightMoves.directions.map { it.getNextPosition(position) })
+        return MoveCollectionDto(position, KnightMoves.directions.mapNotNull { it.getNextPosition(position) })
     }
 }
