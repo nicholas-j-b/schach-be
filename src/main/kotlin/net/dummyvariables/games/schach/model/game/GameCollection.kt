@@ -9,6 +9,6 @@ object GameCollection {
         if (!games.containsKey(gameId)) {
             games[gameId] = Game(EntityManagementService())
         }
-        return games[gameId] ?: throw Exception("game unsuccessfully created")
+        return games[gameId] ?: throw error("game unsuccessfully created")
     }
 }

@@ -24,7 +24,7 @@ class Controller(
     @RequestMapping("/game/create")
     fun createGame(): String {
         val gameId = connectionService.getNewGameId()
-        val message = gameService.createGameAndAllocate(gameId)
+        val message = gameService.createGameAndAllocatePlayerToIt(gameId)
         return messageService.asJson(message)
     }
 
@@ -34,8 +34,8 @@ class Controller(
         return messageService.asJson(message)
     }
 
-    @RequestMapping("/game/spectate")
-    fun spectateGame(): String {
+    @RequestMapping("/game/spectate/{gameId}")
+    fun spectateGame(@PathVariable("gameId") gameId: String): String {
         TODO("not yet implemented")
     }
 }

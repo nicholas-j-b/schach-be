@@ -18,28 +18,24 @@ open class EmptyBoard (
         ).map { it.constructors.first() }
     }
 
-    val pieces = mutableListOf<Piece>()
     var currentColour = Colour.white
 
     fun newTurn(): Colour {
-        val nextColour = if (currentColour == Colour.white) Colour.black else Colour.white
-        currentColour = nextColour
-        return nextColour
+        currentColour = if (currentColour == Colour.white) Colour.black else Colour.white
+        return currentColour
     }
 
     fun addPiece(piece: Piece) {
-        pieces.add(piece)
         entityManagementService.addPieceToBoard(piece)
     }
 
-    fun getLegalMoves(): List<MoveCollectionDto> {
-        val moves = mutableListOf<MoveCollectionDto>()
-        pieces.forEach {piece ->
-            if (piece.colour == currentColour) {
-                moves += piece.getLegalMoves()
-            }
-        }
-        return moves
-    }
+
+//    fun couldStillCastle(colour: Colour): Boolean {
+//        return colour in coloursThatCouldStillCastle
+//    }
+//
+//    fun removeCastleAbility(colour: Colour) {
+//        coloursThatCouldStillCastle.remove(colour)
+//    }
 
 }

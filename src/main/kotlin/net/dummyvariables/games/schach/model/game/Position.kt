@@ -6,9 +6,9 @@ data class Position(
 ) {
     override fun equals(other: Any?): Boolean {
         return if (other is Position) {
-            return x == other.x && y == other.y
+            x == other.x && y == other.y
         } else {
-            super.equals(other)
+            throw error("comparing piece to $other")
         }
     }
 }

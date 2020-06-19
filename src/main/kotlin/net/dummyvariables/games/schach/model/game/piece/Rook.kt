@@ -1,9 +1,6 @@
 package net.dummyvariables.games.schach.model.game.piece
 
-import net.dummyvariables.games.schach.model.game.Colour
-import net.dummyvariables.games.schach.model.game.Direction
-import net.dummyvariables.games.schach.model.game.Move
-import net.dummyvariables.games.schach.model.game.Position
+import net.dummyvariables.games.schach.model.game.*
 import net.dummyvariables.games.schach.model.message.legalMoves.MoveCollectionDto
 import net.dummyvariables.games.schach.service.EntityManagementService
 
@@ -27,7 +24,16 @@ class Rook(
     override val pieceName = "rook"
     override val startingAmount = 2
     override var position: Position = if (colour == Colour.black) Position(id * 7, 0) else Position(id * 7, 7)
-    override fun move(to: Position) {
+    var hasMoved = false
+
+    val boardSide: BoardSide
+
+    init {
+        boardSide = if (id == 0) BoardSide.QUEEN else BoardSide.KING
+    }
+
+    override fun move(to: Position, board: Board) {
+        hasMoved = true
         position = to
     }
 

@@ -9,6 +9,21 @@ class Game(
     val board: Board = Board(entityManagementService)
     val players = mutableListOf<Player>()
 
+    fun getActivePlayer(): Player {
+        return players.first { it.isTurn }
+    }
+
+    fun getNonActivePlayer(): Player {
+        return players.first { !it.isTurn }
+    }
+
+    fun nextTurn() {
+        val currentActivePlayer = getActivePlayer()
+        val currentNonActivePlayer = getNonActivePlayer()
+        currentActivePlayer.isTurn = false
+        currentNonActivePlayer.isTurn = true
+    }
+
     fun addPlayer(connectionId: String, colour: Colour) {
         players.add(Player(connectionId, colour))
     }
@@ -17,7 +32,7 @@ class Game(
         return GameInfoDto(gameId, players.map { it.connectionId })
     }
 
-    fun getFreeColour(): Colour {
+    fun getNonAssignedColour(): Colour {
         return if (players.first().colour == Colour.black) Colour.white else Colour.black
     }
 

@@ -1,9 +1,6 @@
 package net.dummyvariables.games.schach.model.game.piece
 
-import net.dummyvariables.games.schach.model.game.Colour
-import net.dummyvariables.games.schach.model.game.Direction
-import net.dummyvariables.games.schach.model.game.Move
-import net.dummyvariables.games.schach.model.game.Position
+import net.dummyvariables.games.schach.model.game.*
 import net.dummyvariables.games.schach.model.message.legalMoves.MoveCollectionDto
 import net.dummyvariables.games.schach.service.EntityManagementService
 import kotlin.math.abs
@@ -30,7 +27,7 @@ class Knight(
     override val pieceName = "knight"
     override val startingAmount = 2
     override var position: Position = if (colour == Colour.black) Position(1 + id * 5, 0) else Position(1 + id * 5, 7)
-    override fun move(to: Position) {
+    override fun move(to: Position, board: Board) {
         position = to
     }
 
