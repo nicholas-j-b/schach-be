@@ -18,7 +18,7 @@ class StandardBoard(
                 }
                 addPiece(piece)
                 for (id in 1 until piece.startingAmount) {
-                    cls.constructors.first().call(colour, id, entityManagementService)
+                    addPiece(cls.constructors.first().call(colour, id, entityManagementService))
                 }
             }
         }
