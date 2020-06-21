@@ -2,3 +2,9 @@ server:
   port: 9901
   servlet:
     context-path: "/api"
+  ssl:
+    key-store: classpath:keystore.p12
+    key-store-password: password
+    key-store-type: pkcs12
+    key-alias: schach
+    key-password: password
