@@ -2,24 +2,29 @@ package net.dummyvariables.games.schach.model.game.piece
 
 import net.dummyvariables.games.schach.model.game.*
 import net.dummyvariables.games.schach.model.message.legalMoves.MoveCollectionDto
+import net.dummyvariables.games.schach.model.message.legalMoves.MoveDto
 import net.dummyvariables.games.schach.service.EntityManagementService
+import net.dummyvariables.games.schach.service.MovementService
 
 class King(
         override val colour: Colour,
         override val id: Int,
-        override val entityManagementService: EntityManagementService
+        override val entityManagementService: EntityManagementService,
+        private val movementService: MovementService = MovementService()
 ) : Piece() {
     override val pieceName = "king"
     override val startingAmount = 1
     override var position: Position = if (colour == Colour.black) Position(4, 0) else Position(4, 7)
-    private val castleKingMoveDestinations: Map<BoardSide, Position>
+    val castleKingMoveDestinations: Map<BoardSide, Position>
     private val castleRookMoveDestinations: Map<BoardSide, Position>
+    private val rookPositions: Map<BoardSide, Position>
     private val casteKingMoveDirection: Map<BoardSide, Direction>
 
     init {
         val rank = if (colour == Colour.black) 0 else 7
-        castleKingMoveDestinations = mapOf(BoardSide.QUEEN to Position(rank, 2), BoardSide.KING to Position(rank, 6))
-        castleRookMoveDestinations = mapOf(BoardSide.QUEEN to Position(rank, 3), BoardSide.KING to Position(rank, 5))
+        castleKingMoveDestinations = mapOf(BoardSide.QUEEN to Position(2, rank), BoardSide.KING to Position(6, rank))
+        castleRookMoveDestinations = mapOf(BoardSide.QUEEN to Position(3, rank), BoardSide.KING to Position(5, rank))
+        rookPositions = mapOf(BoardSide.QUEEN to Position(0, rank), BoardSide.KING to Position(7, rank))
         casteKingMoveDirection = mapOf(BoardSide.QUEEN to Direction(-1, 0), BoardSide.KING to Direction(1, 0))
     }
 
@@ -29,9 +34,19 @@ class King(
     override fun move(to: Position, board: Board) {
         hasMoved = true
         if (isMoveCastle(to)) {
-            entityManagementService
+            moveRookForCastle(to, board)
         }
         position = to
+    }
+
+    private fun moveRookForCastle(to: Position, board: Board) {
+        val boardSide = castleKingMoveDestinations.filterValues {
+            it == to
+        }.keys.first()
+        val rookPosition = rookPositions[boardSide]
+        val rookDestination = castleRookMoveDestinations[boardSide]
+        val moveDto = MoveDto(rookPosition!!, rookDestination!!)
+        movementService.movePiece(moveDto, board)
     }
 
     private fun isMoveCastle(to: Position): Boolean {
@@ -77,11 +92,4 @@ class King(
         return rook?.hasMoved ?: true
     }
 
-//    private fun getNextOccupancy(positionToTest: Position): Pair<SquareOccupancyType?, Position?> {
-//        val square = kingSideCastleDirection.getNextPosition(positionToTest)
-//        val occupancy = square?.let {
-//            entityManagementService.checkSquareOccupancyType(it)
-//        }
-//        return Pair(occupancy, square)
-//    }
 }

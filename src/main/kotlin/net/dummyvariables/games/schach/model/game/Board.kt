@@ -15,7 +15,7 @@ open class Board (
                 Rook::class,
                 Bishop::class,
                 Knight::class
-        ).map { it.constructors.first() }
+        )
     }
 
     var currentColour = Colour.white

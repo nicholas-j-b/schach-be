@@ -1,19 +1,27 @@
 package net.dummyvariables.games.schach.model.piece
 
 import net.dummyvariables.games.schach.model.game.*
+import net.dummyvariables.games.schach.model.game.piece.BoardSide
 import net.dummyvariables.games.schach.model.game.piece.King
+import net.dummyvariables.games.schach.model.game.piece.Rook
+import net.dummyvariables.games.schach.model.message.legalMoves.MoveDto
 import net.dummyvariables.games.schach.model.util.BoardBuilder
 import net.dummyvariables.games.schach.service.EntityManagementService
+import net.dummyvariables.games.schach.service.GameService
+import net.dummyvariables.games.schach.service.MovementService
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import java.util.stream.Stream
 
 @SpringBootTest
-class KingTest {
+class KingTest(
+        @Autowired private val movementService: MovementService
+) {
     companion object {
         val DEFAULT_COLOUR = Colour.black
         val DEFAULT_ID = 0
@@ -145,40 +153,107 @@ class KingTest {
         }
     }
 
-//    @Test
-//    fun `pawn moves on empty board`() {
-//        val startingPosition = Position(5, 5)
-//        val (pawn, expectedEndPosition) = getPawnAndEndPositionOnEmptyBoard(DEFAULT_COLOUR, startingPosition)
-//
-//        val legalMoves = pawn.getLegalMoves()
-//
-//        assertThat(legalMoves.to.size).isEqualTo(1)
-//        val expectedMove = Move(startingPosition, expectedEndPosition!!)
-//        val actualMove = Move(legalMoves.from, legalMoves.to.first())
-//        assertThat(actualMove).isEqualTo(expectedMove)
-//    }
-//
-////    @Test
-////    fun `pawn promotes to queen in last row`() {
-////        val startingPosition = Position(4, 6)
-////        val (pawn, expectedEndPosition) = getPawnAndEndPositionOnEmptyBoard(Colour.black, startingPosition)
-////
-////        val
-////    }
-//
-//    //TODO("take pieces")
-//    //TODO("piece promotion")
-//    //TODO("disallow self discovering check")
-//
-//
-//    private fun getPawnAndEndPositionOnEmptyBoard(colour: Colour, startingPosition: Position): Pair<Pawn, Position?> {
-//        val board = BoardBuilder.getEmptyBoard()
-//        val pawn = Pawn(colour, 0, EntityManagementService())
-//        val direction = pawn.getForward()
-//        val expectedEndPosition = direction.getNextPosition(startingPosition)
-//        pawn.position = startingPosition
-//        pawn.hasMoved = true
-//        board.addPiece(pawn)
-//        return Pair(pawn, expectedEndPosition)
-//    }
+    @Test
+    fun `king can castle kingside`() {
+        val entityManagementService = EntityManagementService()
+        val king = King(Colour.black, 0, entityManagementService)
+        val rook = Rook(Colour.black, 1, entityManagementService)
+        assertThat(rook.boardSide).isEqualTo(BoardSide.KING)
+        entityManagementService.addPieceToBoard(king)
+        entityManagementService.addPieceToBoard(rook)
+
+        val legalMoves = king.getLegalMoves()
+
+        assertThat(legalMoves.to.indexOf(Position(6, 0))).isNotEqualTo(-1)
+    }
+
+    @Test
+    fun `king can castle queenside`() {
+        val entityManagementService = EntityManagementService()
+        val king = King(Colour.black, 0, entityManagementService)
+        val rook = Rook(Colour.black, 0, entityManagementService)
+        assertThat(rook.boardSide).isEqualTo(BoardSide.QUEEN)
+        entityManagementService.addPieceToBoard(king)
+        entityManagementService.addPieceToBoard(rook)
+
+        val legalMoves = king.getLegalMoves()
+
+        assertThat(legalMoves.to.indexOf(Position(2, 0))).isNotEqualTo(-1)
+    }
+
+    @Test
+    fun `black king castles kingSide`() {
+        val entityManagementService = EntityManagementService()
+        val board = Board(entityManagementService)
+        val king = King(Colour.black, 0, entityManagementService)
+        val rook = Rook(Colour.black, 1, entityManagementService)
+        val boardSide = BoardSide.KING
+        assertThat(rook.boardSide).isEqualTo(boardSide)
+        entityManagementService.addPieceToBoard(king)
+        entityManagementService.addPieceToBoard(rook)
+        val kingDestination = king.castleKingMoveDestinations[boardSide]
+        val moveDto = MoveDto(king.position, kingDestination!!)
+
+        movementService.movePiece(moveDto, board)
+
+        assertThat(king.position).isEqualTo(Position(6, 0))
+        assertThat(rook.position).isEqualTo(Position(5, 0))
+    }
+
+    @Test
+    fun `black king castles queenSide`() {
+        val entityManagementService = EntityManagementService()
+        val board = Board(entityManagementService)
+        val king = King(Colour.black, 0, entityManagementService)
+        val rook = Rook(Colour.black, 0, entityManagementService)
+        val boardSide = BoardSide.QUEEN
+        assertThat(rook.boardSide).isEqualTo(boardSide)
+        entityManagementService.addPieceToBoard(king)
+        entityManagementService.addPieceToBoard(rook)
+        val kingDestination = king.castleKingMoveDestinations[boardSide]
+        val moveDto = MoveDto(king.position, kingDestination!!)
+
+        movementService.movePiece(moveDto, board)
+
+        assertThat(king.position).isEqualTo(Position(2, 0))
+        assertThat(rook.position).isEqualTo(Position(3, 0))
+    }
+
+    @Test
+    fun `white king castles kingSide`() {
+        val entityManagementService = EntityManagementService()
+        val board = Board(entityManagementService)
+        val king = King(Colour.white, 0, entityManagementService)
+        val rook = Rook(Colour.white, 1, entityManagementService)
+        val boardSide = BoardSide.KING
+        assertThat(rook.boardSide).isEqualTo(boardSide)
+        entityManagementService.addPieceToBoard(king)
+        entityManagementService.addPieceToBoard(rook)
+        val kingDestination = king.castleKingMoveDestinations[boardSide]
+        val moveDto = MoveDto(king.position, kingDestination!!)
+
+        movementService.movePiece(moveDto, board)
+
+        assertThat(king.position).isEqualTo(Position(6, 7))
+        assertThat(rook.position).isEqualTo(Position(5, 7))
+    }
+
+    @Test
+    fun `white king castles queenSide`() {
+        val entityManagementService = EntityManagementService()
+        val board = Board(entityManagementService)
+        val king = King(Colour.white, 0, entityManagementService)
+        val rook = Rook(Colour.white, 0, entityManagementService)
+        val boardSide = BoardSide.QUEEN
+        assertThat(rook.boardSide).isEqualTo(boardSide)
+        entityManagementService.addPieceToBoard(king)
+        entityManagementService.addPieceToBoard(rook)
+        val kingDestination = king.castleKingMoveDestinations[boardSide]
+        val moveDto = MoveDto(king.position, kingDestination!!)
+
+        movementService.movePiece(moveDto, board)
+
+        assertThat(king.position).isEqualTo(Position(2, 7))
+        assertThat(rook.position).isEqualTo(Position(3, 7))
+    }
 }
