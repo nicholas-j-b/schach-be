@@ -2,7 +2,6 @@ package net.dummyvariables.games.schach.model.game.piece
 
 import net.dummyvariables.games.schach.model.game.Board
 import net.dummyvariables.games.schach.model.game.Colour
-import net.dummyvariables.games.schach.model.game.Move
 import net.dummyvariables.games.schach.model.game.Position
 import net.dummyvariables.games.schach.model.message.legalMoves.MoveCollectionDto
 import net.dummyvariables.games.schach.service.EntityManagementService

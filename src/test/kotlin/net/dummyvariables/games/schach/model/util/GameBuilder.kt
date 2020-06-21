@@ -1,17 +1,17 @@
 package net.dummyvariables.games.schach.model.util
 
+import net.dummyvariables.games.schach.model.game.StandardBoard
 import net.dummyvariables.games.schach.model.game.Board
-import net.dummyvariables.games.schach.model.game.EmptyBoard
 import net.dummyvariables.games.schach.service.EntityManagementService
 
 class BoardBuilder {
     companion object {
-        fun getBasicBoard(): Board {
-            return Board(EntityManagementService())
+        fun getBasicBoard(): StandardBoard {
+            return StandardBoard(EntityManagementService())
         }
 
-        fun getEmptyBoard(): EmptyBoard {
-            return EmptyBoard(EntityManagementService())
+        fun getEmptyBoard(): Board {
+            return Board(EntityManagementService())
         }
     }
 }

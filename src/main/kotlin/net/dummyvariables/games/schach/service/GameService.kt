@@ -96,7 +96,7 @@ class GameService(
         return messageService.asJson(legalMovesMessage)
     }
 
-    fun getBoard(connectionId: String): Board {
+    fun getBoard(connectionId: String): StandardBoard {
         val gameId = getGameIdFromConnectionId(connectionId)
         return GameCollection.games[gameId]?.board ?: throw error("no game found")
     }
@@ -106,11 +106,11 @@ class GameService(
         return GameCollection.games[gameId]?.entityManagementService ?: throw error("no game found")
     }
 
-    fun waitingOnColour(board: Board): Colour {
+    fun waitingOnColour(board: StandardBoard): Colour {
         return board.currentColour
     }
 
-    fun setNextColourTurn(board: Board): Colour {
+    fun setNextColourTurn(board: StandardBoard): Colour {
         return board.newTurn()
     }
 

@@ -27,7 +27,7 @@ class King(
     var hasMoved = false
 
     override fun move(to: Position, board: Board) {
-        hasMoved = false
+        hasMoved = true
         if (isMoveCastle(to)) {
             entityManagementService
         }
@@ -73,8 +73,8 @@ class King(
     }
 
     private fun hasRookMoved(boardSide: BoardSide): Boolean {
-        val rook = entityManagementService.getRookBySide(colour, boardSide) as Rook
-        return rook.hasMoved
+        val rook = entityManagementService.getRookBySide(colour, boardSide) as Rook?
+        return rook?.hasMoved ?: true
     }
 
 //    private fun getNextOccupancy(positionToTest: Position): Pair<SquareOccupancyType?, Position?> {

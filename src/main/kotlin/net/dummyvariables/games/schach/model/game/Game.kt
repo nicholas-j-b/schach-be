@@ -6,7 +6,7 @@ import net.dummyvariables.games.schach.service.EntityManagementService
 class Game(
         val entityManagementService: EntityManagementService
 ) {
-    val board: Board = Board(entityManagementService)
+    val board: StandardBoard = StandardBoard(entityManagementService)
     val players = mutableListOf<Player>()
 
     fun getActivePlayer(): Player {
