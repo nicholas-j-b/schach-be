@@ -38,7 +38,7 @@ class EntityManagementService {
 
     fun getRookBySide(colour: Colour, boardSide: BoardSide): Piece? {
         return pieces.firstOrNull {
-            it is Rook && it.boardSide == boardSide
+            it is Rook && it.boardSide == boardSide && it.colour == colour
         }
     }
     fun takePieceIfExists(position: Position) {

@@ -2,6 +2,7 @@ package net.dummyvariables.games.schach.model.game.piece
 
 import net.dummyvariables.games.schach.model.game.*
 import net.dummyvariables.games.schach.model.message.legalMoves.MoveCollectionDto
+import net.dummyvariables.games.schach.model.message.legalMoves.MoveDto
 import net.dummyvariables.games.schach.service.EntityManagementService
 
 abstract class Piece {
@@ -30,9 +31,9 @@ abstract class Piece {
     }
 
     // assumes valid move
-    fun moveTakesPiece(move: Move): Boolean {
-        val fromOccupancy = entityManagementService.checkSquareOccupancyType(move.from)
-        val toOccupancy = entityManagementService.checkSquareOccupancyType(move.to)
+    fun moveTakesPiece(moveDto: MoveDto): Boolean {
+        val fromOccupancy = entityManagementService.checkSquareOccupancyType(moveDto.from)
+        val toOccupancy = entityManagementService.checkSquareOccupancyType(moveDto.to)
         return  toOccupancy.isSquare &&
                 toOccupancy.isOccupied &&
                 toOccupancy.colour != fromOccupancy.colour

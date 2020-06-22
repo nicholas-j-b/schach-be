@@ -2,6 +2,7 @@ package net.dummyvariables.games.schach.model.game.piece
 
 import net.dummyvariables.games.schach.model.game.*
 import net.dummyvariables.games.schach.model.message.legalMoves.MoveCollectionDto
+import net.dummyvariables.games.schach.model.message.legalMoves.MoveDestinationDto
 import net.dummyvariables.games.schach.service.EntityManagementService
 import kotlin.math.abs
 
@@ -32,6 +33,9 @@ class Knight(
     }
 
     override fun getLegalMoves(): MoveCollectionDto {
-        return MoveCollectionDto(position, KnightMoves.directions.mapNotNull { it.getNextPosition(position) })
+        val regularMoves = KnightMoves.directions.mapNotNull { it.getNextPosition(position) }
+        return MoveCollectionDto(position, regularMoves.map {
+            MoveDestinationDto(it)
+        })
     }
 }

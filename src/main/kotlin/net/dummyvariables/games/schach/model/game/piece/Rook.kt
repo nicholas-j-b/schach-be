@@ -2,6 +2,7 @@ package net.dummyvariables.games.schach.model.game.piece
 
 import net.dummyvariables.games.schach.model.game.*
 import net.dummyvariables.games.schach.model.message.legalMoves.MoveCollectionDto
+import net.dummyvariables.games.schach.model.message.legalMoves.MoveDestinationDto
 import net.dummyvariables.games.schach.service.EntityManagementService
 
 class RookDirections {
@@ -41,7 +42,7 @@ class Rook(
         return MoveCollectionDto(position, RookDirections.directions.flatMap {
             getLegalPositionsRay(position, it)
         }.map {
-            it
+            MoveDestinationDto(it)
         })
     }
 }

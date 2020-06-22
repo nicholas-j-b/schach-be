@@ -1,9 +1,9 @@
 package net.dummyvariables.games.schach.model.piece
 
 import net.dummyvariables.games.schach.model.game.Colour
-import net.dummyvariables.games.schach.model.game.Move
 import net.dummyvariables.games.schach.model.game.Position
 import net.dummyvariables.games.schach.model.game.piece.Pawn
+import net.dummyvariables.games.schach.model.message.legalMoves.MoveDestinationDto
 import net.dummyvariables.games.schach.model.message.legalMoves.MoveDto
 import net.dummyvariables.games.schach.model.util.BoardBuilder
 import net.dummyvariables.games.schach.service.EntityManagementService
@@ -34,7 +34,10 @@ class PawnTest(
                     val legalY2 = if (colour == Colour.black) 3 else 4
                     arguments[i * 8 + j] = Arguments.of(
                             Pawn(colour, j, EntityManagementService()),
-                            listOf(Position(j, legalY1), Position(j, legalY2))
+                            listOf(
+                                    MoveDestinationDto(Position(j, legalY1)),
+                                    MoveDestinationDto(Position(j, legalY2))
+                            )
                     )
                 }
             }
@@ -53,7 +56,7 @@ class PawnTest(
 
     @ParameterizedTest
     @MethodSource("legal starting moves")
-    fun `legal starting moves are correct`(pawn: Pawn, legalMoveDestinations: List<Position>) {
+    fun `legal starting moves are correct`(pawn: Pawn, legalMoveDestinations: List<MoveDestinationDto>) {
         val legalMoves = pawn.getLegalMoves()
 
         assertThat(legalMoves.to.size).isEqualTo(2)
@@ -71,8 +74,8 @@ class PawnTest(
         val legalMoves = pawn.getLegalMoves()
 
         assertThat(legalMoves.to.size).isEqualTo(1)
-        val expectedMove = Move(startingPosition, expectedEndPosition!!)
-        val actualMove = Move(legalMoves.from, legalMoves.to.first())
+        val expectedMove = MoveDto(startingPosition, expectedEndPosition!!)
+        val actualMove = MoveDto(legalMoves.from, legalMoves.to.first().to)
         assertThat(actualMove).isEqualTo(expectedMove)
     }
 

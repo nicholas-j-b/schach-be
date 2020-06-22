@@ -2,6 +2,7 @@ package net.dummyvariables.games.schach.model.game.piece
 
 import net.dummyvariables.games.schach.model.game.*
 import net.dummyvariables.games.schach.model.message.legalMoves.MoveCollectionDto
+import net.dummyvariables.games.schach.model.message.legalMoves.MoveDestinationDto
 import net.dummyvariables.games.schach.model.message.legalMoves.MoveDto
 import net.dummyvariables.games.schach.service.EntityManagementService
 import net.dummyvariables.games.schach.service.MovementService
@@ -58,7 +59,9 @@ class King(
             getLegalPositionsRay(position, it, 1)
         }
         val castlingMoves = getCastleMoves()
-        return MoveCollectionDto(position, regularMoves + castlingMoves)
+        return MoveCollectionDto(position, (regularMoves + castlingMoves).map {
+            MoveDestinationDto(it)
+        })
     }
 
 

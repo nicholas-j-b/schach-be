@@ -4,6 +4,7 @@ import net.dummyvariables.games.schach.model.game.Board
 import net.dummyvariables.games.schach.model.game.Colour
 import net.dummyvariables.games.schach.model.game.Position
 import net.dummyvariables.games.schach.model.message.legalMoves.MoveCollectionDto
+import net.dummyvariables.games.schach.model.message.legalMoves.MoveDestinationDto
 import net.dummyvariables.games.schach.service.EntityManagementService
 
 class Queen(
@@ -22,7 +23,7 @@ class Queen(
         return MoveCollectionDto(position, (RookDirections.directions + BishopDirections.directions).flatMap {
             getLegalPositionsRay(position, it)
         }.map {
-            it
+            MoveDestinationDto(it)
         })
     }
 }

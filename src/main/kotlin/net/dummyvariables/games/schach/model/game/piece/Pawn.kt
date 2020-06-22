@@ -2,6 +2,8 @@ package net.dummyvariables.games.schach.model.game.piece
 
 import net.dummyvariables.games.schach.model.game.*
 import net.dummyvariables.games.schach.model.message.legalMoves.MoveCollectionDto
+import net.dummyvariables.games.schach.model.message.legalMoves.MoveDestinationDto
+import net.dummyvariables.games.schach.model.message.legalMoves.MoveDto
 import net.dummyvariables.games.schach.service.EntityManagementService
 
 class Pawn(
@@ -30,13 +32,12 @@ class Pawn(
         }
     }
 
-    //TODO("diagonal take availabilities")
     override fun getLegalMoves(): MoveCollectionDto {
         val limit = if (hasMoved) 1 else 2
         val legalForwardMoveDestinations = getLegalPositionsRay(position, getForward(), limit, false)
         val legalDiagonalMoveDestinations = getDiagonals()
         return MoveCollectionDto(
-                position, (legalForwardMoveDestinations + legalDiagonalMoveDestinations).map { it }
+                position, (legalForwardMoveDestinations + legalDiagonalMoveDestinations).map { MoveDestinationDto(it) }
         )
     }
 
@@ -48,7 +49,7 @@ class Pawn(
         val forwards = getForward().y
         return listOf(Direction(1, forwards), Direction(-1, forwards)).mapNotNull { direction ->
             direction.getNextPosition(position)?.let {
-                if (moveTakesPiece(Move(position, it))) it else null
+                if (moveTakesPiece(MoveDto(position, it))) it else null
             }
         }
     }

@@ -4,5 +4,5 @@ import net.dummyvariables.games.schach.model.game.Position
 
 data class MoveCollectionDto (
         val from: Position,
-        val to: List<Position>
+        val to: List<MoveDestinationDto>
 )

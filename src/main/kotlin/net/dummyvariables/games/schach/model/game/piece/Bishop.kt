@@ -2,6 +2,7 @@ package net.dummyvariables.games.schach.model.game.piece
 
 import net.dummyvariables.games.schach.model.game.*
 import net.dummyvariables.games.schach.model.message.legalMoves.MoveCollectionDto
+import net.dummyvariables.games.schach.model.message.legalMoves.MoveDestinationDto
 import net.dummyvariables.games.schach.service.EntityManagementService
 
 class BishopDirections {
@@ -30,7 +31,7 @@ class Bishop(
         return MoveCollectionDto(position, BishopDirections.directions.flatMap {
             getLegalPositionsRay(position, it)
         }.map {
-            it
+            MoveDestinationDto(it)
         })
     }
 }

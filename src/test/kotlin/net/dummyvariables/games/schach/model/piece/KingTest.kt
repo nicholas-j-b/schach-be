@@ -4,6 +4,7 @@ import net.dummyvariables.games.schach.model.game.*
 import net.dummyvariables.games.schach.model.game.piece.BoardSide
 import net.dummyvariables.games.schach.model.game.piece.King
 import net.dummyvariables.games.schach.model.game.piece.Rook
+import net.dummyvariables.games.schach.model.message.legalMoves.MoveDestinationDto
 import net.dummyvariables.games.schach.model.message.legalMoves.MoveDto
 import net.dummyvariables.games.schach.model.util.BoardBuilder
 import net.dummyvariables.games.schach.service.EntityManagementService
@@ -32,13 +33,13 @@ class KingTest(
             val arguments = arrayOfNulls<Arguments?>(2)
             var arrayCounter = 0
             val startPos = Position(4, 4)
-            listOf(Colour.white, Colour.black).forEachIndexed { i: Int, colour: Colour ->
-                val moves = mutableListOf<Position>()
+            listOf(Colour.white, Colour.black).forEach { colour: Colour ->
+                val moves = mutableListOf<MoveDestinationDto>()
                 for (j in -1..1) {
                     for (k in -1..1) {
                         if (j != 0 || k != 0) {
                             val pos = Position(startPos.x + j, startPos.y + k)
-                            moves.add(pos)
+                            moves.add(MoveDestinationDto(pos))
                         }
                     }
                 }
@@ -56,13 +57,13 @@ class KingTest(
             val arguments = arrayOfNulls<Arguments?>(2)
             var arrayCounter = 0
             val startPos = Position(0, 4)
-            listOf(Colour.white, Colour.black).forEachIndexed { i: Int, colour: Colour ->
-                val moves = mutableListOf<Position>()
+            listOf(Colour.white, Colour.black).forEach { colour: Colour ->
+                val moves = mutableListOf<MoveDestinationDto>()
                 for (j in -1..1) {
                     for (k in -1..1) {
                         if (j != 0 || k != 0) {
                             val pos = Position(startPos.x + j, startPos.y + k)
-                            moves.add(pos)
+                            moves.add(MoveDestinationDto(pos))
                         }
                     }
                 }
@@ -80,13 +81,13 @@ class KingTest(
             val arguments = arrayOfNulls<Arguments?>(2)
             var arrayCounter = 0
             val startPos = Position(0, 0)
-            listOf(Colour.white, Colour.black).forEachIndexed { i: Int, colour: Colour ->
-                val moves = mutableListOf<Position>()
+            listOf(Colour.white, Colour.black).forEach { colour: Colour ->
+                val moves = mutableListOf<MoveDestinationDto>()
                 for (j in -1..1) {
                     for (k in -1..1) {
                         if (j != 0 || k != 0) {
                             val pos = Position(startPos.x + j, startPos.y + k)
-                            moves.add(pos)
+                            moves.add(MoveDestinationDto(pos))
                         }
                     }
                 }
@@ -119,7 +120,7 @@ class KingTest(
 
     @ParameterizedTest
     @MethodSource("legal moves in middle of board")
-    fun `legal moves from middle of board are correct`(king: King, legalMoveDestinations: List<Position>) {
+    fun `legal moves from middle of board are correct`(king: King, legalMoveDestinations: List<MoveDestinationDto>) {
         val legalMoves = king.getLegalMoves()
 
         assertThat(legalMoves.to.size).isEqualTo(8)
@@ -131,7 +132,7 @@ class KingTest(
 
     @ParameterizedTest
     @MethodSource("legal moves on edge of board")
-    fun `legal moves from board edge are correct`(king: King, legalMoveDestinations: List<Position>) {
+    fun `legal moves from board edge are correct`(king: King, legalMoveDestinations: List<MoveDestinationDto>) {
         val legalMoves = king.getLegalMoves()
 
         assertThat(legalMoves.to.size).isEqualTo(5)
@@ -143,7 +144,7 @@ class KingTest(
 
     @ParameterizedTest
     @MethodSource("legal moves on corner of board")
-    fun `legal moves from board corner are correct`(king: King, legalMoveDestinations: List<Position>) {
+    fun `legal moves from board corner are correct`(king: King, legalMoveDestinations: List<MoveDestinationDto>) {
         val legalMoves = king.getLegalMoves()
 
         assertThat(legalMoves.to.size).isEqualTo(3)
@@ -164,7 +165,7 @@ class KingTest(
 
         val legalMoves = king.getLegalMoves()
 
-        assertThat(legalMoves.to.indexOf(Position(6, 0))).isNotEqualTo(-1)
+        assertThat(legalMoves.to.indexOf(MoveDestinationDto(Position(6, 0)))).isNotEqualTo(-1)
     }
 
     @Test
@@ -178,7 +179,7 @@ class KingTest(
 
         val legalMoves = king.getLegalMoves()
 
-        assertThat(legalMoves.to.indexOf(Position(2, 0))).isNotEqualTo(-1)
+        assertThat(legalMoves.to.indexOf(MoveDestinationDto(Position(2, 0)))).isNotEqualTo(-1)
     }
 
     @Test

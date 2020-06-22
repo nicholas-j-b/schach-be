@@ -4,5 +4,6 @@ import net.dummyvariables.games.schach.model.game.Position
 
 data class MoveDto (
         val from: Position,
-        val to: Position
+        val to: Position,
+        val promotion: String? = null
 )
