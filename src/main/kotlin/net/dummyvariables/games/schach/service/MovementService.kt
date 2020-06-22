@@ -34,9 +34,7 @@ class MovementService {
 
     private fun takePieceIfNeed(board: Board, moveDto: MoveDto) {
         //TODO("add to 'taken pieces' or similar")
-        board.entityManagementService.pieces.removeIf {
-            it.position == moveDto.to
-        }
+        board.entityManagementService.takePieceIfExists(moveDto.to)
     }
 
 }

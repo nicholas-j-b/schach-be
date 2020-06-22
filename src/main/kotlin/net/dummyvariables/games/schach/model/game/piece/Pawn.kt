@@ -12,6 +12,7 @@ class Pawn(
     override val pieceName = "pawn"
     override val startingAmount = 8
     override var position: Position = if (colour == Colour.black) Position(id, 1) else Position(id, 6)
+    private val promotionRank = if (colour == Colour.black) 7 else 0
 
     var hasMoved = false
         set(moved) {
@@ -19,8 +20,14 @@ class Pawn(
         }
 
     override fun move(to: Position, board: Board) {
-        position = to
         hasMoved = true
+        position = to
+        if (isPawnPromotion(to)) {
+            entityManagementService.takePieceIfExists(to)
+            val newPiece = Queen(colour, board.getNextPromotionId(), entityManagementService)
+            newPiece.position = to
+            entityManagementService.addPieceToBoard(newPiece)
+        }
     }
 
     //TODO("diagonal take availabilities")
@@ -46,5 +53,8 @@ class Pawn(
         }
     }
 
+    private fun isPawnPromotion(to: Position): Boolean {
+        return to.y == promotionRank
+    }
 
 }

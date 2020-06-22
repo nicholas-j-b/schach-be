@@ -18,6 +18,7 @@ open class Board (
         )
     }
 
+    private var promotionId = 10
     var currentColour = Colour.white
 
     fun newTurn(): Colour {
@@ -29,13 +30,7 @@ open class Board (
         entityManagementService.addPieceToBoard(piece)
     }
 
-
-//    fun couldStillCastle(colour: Colour): Boolean {
-//        return colour in coloursThatCouldStillCastle
-//    }
-//
-//    fun removeCastleAbility(colour: Colour) {
-//        coloursThatCouldStillCastle.remove(colour)
-//    }
-
+    fun getNextPromotionId(): Int {
+        return promotionId++
+    }
 }

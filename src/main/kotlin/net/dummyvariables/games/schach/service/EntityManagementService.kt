@@ -41,6 +41,11 @@ class EntityManagementService {
             it is Rook && it.boardSide == boardSide
         }
     }
+    fun takePieceIfExists(position: Position) {
+        pieces.removeIf {
+            it.position == position
+        }
+    }
 
     fun getLegalMoves(colour: Colour): List<MoveCollectionDto> {
         val moves = mutableListOf<MoveCollectionDto>()

@@ -4,18 +4,23 @@ import net.dummyvariables.games.schach.model.game.Colour
 import net.dummyvariables.games.schach.model.game.Move
 import net.dummyvariables.games.schach.model.game.Position
 import net.dummyvariables.games.schach.model.game.piece.Pawn
+import net.dummyvariables.games.schach.model.message.legalMoves.MoveDto
 import net.dummyvariables.games.schach.model.util.BoardBuilder
 import net.dummyvariables.games.schach.service.EntityManagementService
+import net.dummyvariables.games.schach.service.MovementService
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import java.util.stream.Stream
 
 @SpringBootTest
-class PawnTest {
+class PawnTest(
+        @Autowired private val movementService: MovementService
+) {
     companion object {
         val DEFAULT_COLOUR = Colour.black
         val DEFAULT_ID = 0
@@ -71,18 +76,20 @@ class PawnTest {
         assertThat(actualMove).isEqualTo(expectedMove)
     }
 
-//    @Test
-//    fun `pawn promotes to queen in last row`() {
-//        val startingPosition = Position(4, 6)
-//        val (pawn, expectedEndPosition) = getPawnAndEndPositionOnEmptyBoard(Colour.black, startingPosition)
-//
-//        val
-//    }
+    @Test
+    fun `pawn promotes to queen in last row`() {
+        val board = BoardBuilder.getEmptyBoard()
+        val pawn = Pawn(Colour.black, 0, board.entityManagementService)
+        board.addPiece(pawn)
+        val startingPos = Position(4, 6)
+        val moveDto = MoveDto(pawn.position, startingPos)
+        movementService.movePiece(moveDto, board)
 
-    //TODO("take pieces")
-    //TODO("piece promotion")
-    //TODO("disallow self discovering check")
+        movementService.movePiece(MoveDto(startingPos, Position(4, 7)), board)
 
+        val queen = board.entityManagementService.pieces.first()
+        assertThat(queen.pieceName).isEqualTo("queen")
+    }
 
     private fun getPawnAndEndPositionOnEmptyBoard(colour: Colour, startingPosition: Position): Pair<Pawn, Position?> {
         val board = BoardBuilder.getEmptyBoard()
