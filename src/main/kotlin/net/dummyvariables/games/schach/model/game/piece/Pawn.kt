@@ -37,7 +37,7 @@ class Pawn(
         val legalForwardMoveDestinations = getLegalPositionsRay(position, getForward(), limit, false)
         val legalDiagonalMoveDestinations = getDiagonals()
         return MoveCollectionDto(
-                position, (legalForwardMoveDestinations + legalDiagonalMoveDestinations).map { MoveDestinationDto(it) }
+                position, (legalForwardMoveDestinations + legalDiagonalMoveDestinations).map { MoveDestinationDto(it, isPawnPromotion(it)) }
         )
     }
 
