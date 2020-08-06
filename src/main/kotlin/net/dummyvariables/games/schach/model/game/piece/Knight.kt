@@ -33,7 +33,15 @@ class Knight(
     }
 
     override fun getLegalMoves(): MoveCollectionDto {
-        val regularMoves = KnightMoves.directions.mapNotNull { it.getNextPosition(position) }
+        val regularMoves = KnightMoves.directions.mapNotNull { direction ->
+            val potentialMove = direction.getNextPosition(position)
+            potentialMove?.let {
+                if (entityManagementService.isOccupiedByColour(it, colour)) {
+                    null
+                }
+
+            }
+        }
         return MoveCollectionDto(position, regularMoves.map {
             MoveDestinationDto(it)
         })
