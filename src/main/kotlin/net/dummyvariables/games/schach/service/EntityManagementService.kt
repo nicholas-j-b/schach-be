@@ -30,6 +30,15 @@ class EntityManagementService {
         return SquareOccupancyType(isOccupied, isSquare, colour)
     }
 
+    fun isOccupiedByColour(position: Position, colour: Colour): Boolean {
+        val occupancyType = checkSquareOccupancyType(position)
+        return when {
+            !occupancyType.isOccupied -> false
+            occupancyType.colour == colour -> true
+            else -> false
+        }
+    }
+
     fun getPiecesBy(pieceName: String, colour: Colour, id: IntRange): Piece {
         return pieces.first { piece ->
             piece.pieceName == pieceName && piece.colour == colour && piece.id in id
