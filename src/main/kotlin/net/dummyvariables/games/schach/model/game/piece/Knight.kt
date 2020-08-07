@@ -38,8 +38,9 @@ class Knight(
             potentialMove?.let {
                 if (entityManagementService.isOccupiedByColour(it, colour)) {
                     null
+                } else {
+                    it
                 }
-
             }
         }
         return MoveCollectionDto(position, regularMoves.map {
