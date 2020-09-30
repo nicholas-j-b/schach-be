@@ -16,6 +16,7 @@ repositories {
 }
 
 dependencies {
+	implementation("com.squareup.moshi:moshi-kotlin:1.9.3")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springframework.boot:spring-boot-starter-websocket")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
