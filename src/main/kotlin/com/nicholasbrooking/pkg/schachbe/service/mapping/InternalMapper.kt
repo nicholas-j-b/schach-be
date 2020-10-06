@@ -9,3 +9,12 @@ fun com.nicholasbrooking.pkg.schachbe.api.model.UserRole.toInternalEnum(): UserR
         com.nicholasbrooking.pkg.schachbe.api.model.UserRole.PLAYER -> UserRole.PLAYER
     }
 }
+
+fun com.nicholasbrooking.pkg.schachbe.api.model.NewUserDto.toInternalDto(): NewUserDto {
+    return NewUserDto(
+            username = this.username,
+            password = this.password,
+            userRoles = mutableListOf(),
+            enabled = true
+    )
+}

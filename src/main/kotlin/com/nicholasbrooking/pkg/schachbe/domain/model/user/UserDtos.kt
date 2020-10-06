@@ -8,3 +8,10 @@ data class UserDto(
 enum class UserRole {
     ADMIN, PLAYER
 }
+
+data class NewUserDto(
+        val username: String,
+        val password: String,
+        val enabled: Boolean,
+        val userRoles: MutableList<UserRole>
+)

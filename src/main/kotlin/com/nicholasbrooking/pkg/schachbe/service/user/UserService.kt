@@ -3,6 +3,7 @@ package com.nicholasbrooking.pkg.schachbe.service.user
 import com.nicholasbrooking.pkg.schachbe.domain.entity.service.UserEntityService
 import com.nicholasbrooking.pkg.schachbe.domain.model.user.UserDto
 import com.nicholasbrooking.pkg.schachbe.domain.entity.user.User
+import com.nicholasbrooking.pkg.schachbe.domain.model.user.NewUserDto
 import com.nicholasbrooking.pkg.schachbe.domain.model.user.UserRole
 import com.nicholasbrooking.pkg.schachbe.domain.repository.UserRepository
 import org.springframework.stereotype.Service
@@ -19,6 +20,11 @@ class UserService(
 
     fun getAllUsers(): List<UserDto> {
         return userEntityService.getAllUsers()
+    }
+
+    fun addUser(newUserDto: NewUserDto) {
+        newUserDto.userRoles += UserRole.PLAYER
+        userEntityService.createNewUser(newUserDto)
     }
 
     fun appendUserRoles(username: String, userRoles: List<UserRole>){

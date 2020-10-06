@@ -3,7 +3,7 @@ package com.nicholasbrooking.pkg.schachbe.domain.entity.user
 import javax.persistence.*
 
 @Entity
-@Table(name = "USER")
+@Table(name = "user")
 data class User(
         @Id
         @Column(nullable = false)
@@ -15,6 +15,11 @@ data class User(
         @Column(nullable = false)
         var enabled: Boolean,
 
-        @OneToMany(mappedBy = "authority")
-        var userRoles: Set<String>
+        @ManyToMany
+        @JoinTable(
+                name = "user_authority",
+                joinColumns = [ JoinColumn(name = "username") ],
+                inverseJoinColumns = [ JoinColumn(name = "user_role") ]
+        )
+        var userRoles: Set<Authority>
 )

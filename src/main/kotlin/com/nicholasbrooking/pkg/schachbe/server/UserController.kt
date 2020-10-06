@@ -7,6 +7,7 @@ import com.nicholasbrooking.pkg.schachbe.api.model.UserDto
 import com.nicholasbrooking.pkg.schachbe.api.model.UserRole
 import com.nicholasbrooking.pkg.schachbe.service.mapping.toApiDto
 import com.nicholasbrooking.pkg.schachbe.service.mapping.toApiEnum
+import com.nicholasbrooking.pkg.schachbe.service.mapping.toInternalDto
 import com.nicholasbrooking.pkg.schachbe.service.mapping.toInternalEnum
 import com.nicholasbrooking.pkg.schachbe.service.user.UserService
 import org.springframework.http.ResponseEntity
@@ -27,7 +28,10 @@ class UserController(
     }
 
     override fun registerNewUser(newUserDto: NewUserDto): ResponseEntity<String> {
-        TODO("Not yet implemented")
+        requestReceiver.schachfishReceive {
+            userService.addUser(newUserDto.toInternalDto())
+            return ResponseEntity.ok("success")
+        }
     }
 
     override fun getAllUsers(): ResponseEntity<List<UserDto>> {

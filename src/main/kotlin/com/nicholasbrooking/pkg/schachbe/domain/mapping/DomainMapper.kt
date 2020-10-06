@@ -15,7 +15,7 @@ fun userRoleToInternalEnum(userRole: String): UserRole {
 
 fun User.toInternalDto(): UserDto {
     val userRoles = this.userRoles.map {
-        userRoleToInternalEnum(it)
+        userRoleToInternalEnum(it.userRole)
     }
     return UserDto(
             username = this.username,

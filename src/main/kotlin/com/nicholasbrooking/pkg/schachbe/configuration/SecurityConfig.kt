@@ -20,10 +20,9 @@ class SecurityConfig(
     private val getUserQueryString =
             "SELECT username, password, enabled FROM user WHERE username = ?"
     private val getAuthoritiesByUserQueryString =
-            "SELECT u.username, a.name " +
-                    "FROM authority a, user u " +
-                    "WHERE u.username = ? " +
-                    "AND u.username = a.username"
+            "SELECT ua.username, ua.user_role " +
+                    "FROM user_authority ua " +
+                    "WHERE ua.username = ?"
 
     override fun configure(http: HttpSecurity) {
         http
@@ -48,7 +47,7 @@ class SecurityConfig(
 
     @Bean
     fun passwordEncoder(): PasswordEncoder {
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder()
+        return BCryptPasswordEncoder()
     }
 }
 

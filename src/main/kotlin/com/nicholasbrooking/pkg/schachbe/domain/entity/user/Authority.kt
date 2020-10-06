@@ -1,17 +1,15 @@
 package com.nicholasbrooking.pkg.schachbe.domain.entity.user
 
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.Id
-import javax.persistence.Table
+import com.nicholasbrooking.pkg.schachbe.domain.model.user.UserRole
+import javax.persistence.*
 
 @Entity
-@Table(name = "AUTHORITY")
+@Table(name = "authority")
 data class Authority(
         @Id
         @Column(nullable = false)
-        val username: String,
+        val userRole: String
 
-        @Column(nullable = false)
-        val name: String
+//        @ManyToMany(mappedBy = "userRoles")
+//        val users: Set<User>
 )
