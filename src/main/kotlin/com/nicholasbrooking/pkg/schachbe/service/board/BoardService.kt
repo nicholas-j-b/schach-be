@@ -1,5 +1,6 @@
 package com.nicholasbrooking.pkg.schachbe.service.board
 
+import com.nicholasbrooking.pkg.schachbe.api.model.BoardId
 import com.nicholasbrooking.pkg.schachbe.client.BoardClient
 import org.springframework.stereotype.Service
 
@@ -7,7 +8,7 @@ import org.springframework.stereotype.Service
 class BoardService(
         private val boardClient: BoardClient
 ) {
-    fun getAllActiveBoardIds(): List<Long> {
+    fun getAllActiveBoardIds(): List<BoardId> {
         return boardClient.getAllIds()
     }
 }

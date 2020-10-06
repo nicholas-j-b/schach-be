@@ -35,3 +35,4 @@ out/
 
 ### config ###
 src/main/resources/application.yml
+/src/main/java/com/nicholasbrooking/pkg/schachbe/api/

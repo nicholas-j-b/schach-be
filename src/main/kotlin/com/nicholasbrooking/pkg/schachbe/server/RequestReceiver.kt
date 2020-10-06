@@ -1,6 +1,6 @@
 package com.nicholasbrooking.pkg.schachbe.server
 
-import com.nicholasbrooking.pkg.schachbe.service.exception.SchachbeInvalidState
+import com.nicholasbrooking.pkg.schachbe.service.exception.data.SchachbeInvalidState
 import org.springframework.http.HttpStatus
 import org.springframework.web.server.ResponseStatusException
 
