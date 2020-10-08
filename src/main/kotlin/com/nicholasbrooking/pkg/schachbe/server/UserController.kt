@@ -1,12 +1,12 @@
 package com.nicholasbrooking.pkg.schachbe.server
 
-import com.nicholasbrooking.pkg.schachbe.api.HealthApi
 import com.nicholasbrooking.pkg.schachbe.api.UserApi
+import com.nicholasbrooking.pkg.schachbe.api.model.MessageDto
 import com.nicholasbrooking.pkg.schachbe.api.model.NewUserDto
 import com.nicholasbrooking.pkg.schachbe.api.model.UserDto
 import com.nicholasbrooking.pkg.schachbe.api.model.UserRole
+import com.nicholasbrooking.pkg.schachbe.domain.model.message.SuccessMessage
 import com.nicholasbrooking.pkg.schachbe.service.mapping.toApiDto
-import com.nicholasbrooking.pkg.schachbe.service.mapping.toApiEnum
 import com.nicholasbrooking.pkg.schachbe.service.mapping.toInternalDto
 import com.nicholasbrooking.pkg.schachbe.service.mapping.toInternalEnum
 import com.nicholasbrooking.pkg.schachbe.service.user.UserService
@@ -14,10 +14,10 @@ import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.CrossOrigin
 
-@CrossOrigin
 @Controller
+@CrossOrigin
 class UserController(
-        val userService: UserService
+        private val userService: UserService
 ) : UserApi {
     private val requestReceiver = RequestReceiver()
 
@@ -27,10 +27,10 @@ class UserController(
         }
     }
 
-    override fun registerNewUser(newUserDto: NewUserDto): ResponseEntity<String> {
+    override fun registerNewUser(newUserDto: NewUserDto): ResponseEntity<MessageDto> {
         requestReceiver.schachfishReceive {
             userService.addUser(newUserDto.toInternalDto())
-            return ResponseEntity.ok("success")
+            return ResponseEntity.ok(SuccessMessage().toApiDto())
         }
     }
 

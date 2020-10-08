@@ -8,7 +8,6 @@ import com.nicholasbrooking.pkg.schachbe.service.board.BoardService
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.CrossOrigin
-import org.springframework.web.bind.annotation.GetMapping
 
 @CrossOrigin
 @Controller
@@ -34,10 +33,4 @@ class BoardController(
         TODO("Not yet implemented")
     }
 
-//        @GetMapping("/board/allIds")
-//    fun getAllBoardIds(): ResponseEntity<List<BoardId>> {
-//        requestReceiver.schachfishReceive {
-//            return ResponseEntity.ok(boardService.getAllActiveBoardIds().map { it })
-//        }
-//    }
 }

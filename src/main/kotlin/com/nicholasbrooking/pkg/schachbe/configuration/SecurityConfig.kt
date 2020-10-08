@@ -7,7 +7,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
-import org.springframework.security.crypto.factory.PasswordEncoderFactories
 import org.springframework.security.crypto.password.PasswordEncoder
 import javax.sql.DataSource
 
@@ -26,6 +25,8 @@ class SecurityConfig(
 
     override fun configure(http: HttpSecurity) {
         http
+                .cors()
+                .and()
                 .formLogin().disable()
                 .csrf().disable()
                 .httpBasic()
@@ -34,6 +35,7 @@ class SecurityConfig(
                 .antMatchers("/health/**").permitAll()
                 .antMatchers("/user/new/**").permitAll()
                 .antMatchers("/**/admin/**").hasRole("ADMIN")
+                .antMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
     }
 
@@ -50,34 +52,3 @@ class SecurityConfig(
         return BCryptPasswordEncoder()
     }
 }
-
-
-
-
-//class SecurityConfig : WebSecurityConfigurerAdapter() {
-////    @Autowired
-////    private val authenticationEntryPoint: MyBasicAuthenticationEntryPoint? = null
-//    @Autowired
-//    fun configureGlobal(auth: AuthenticationManagerBuilder) {
-//    auth.jdbcAuthentication()
-////        auth.inMemoryAuthentication()
-////                .withUser("schach").password(passwordEncoder().encode("schach"))
-////                .authorities("ROLE_USER")
-//    }
-//
-//    override fun configure(http: HttpSecurity) {
-//        http.authorizeRequests()
-////                .antMatchers("/securityNone").permitAll()
-//                .anyRequest().authenticated()
-//                .and()
-//                .httpBasic()
-////                .authenticationEntryPoint(authenticationEntryPoint)
-////        http.addFilterAfter(CustomFilter(),
-////                BasicAuthenticationFilter::class.java)
-//    }
-//
-//    @Bean
-//    fun passwordEncoder(): PasswordEncoder {
-//        return BCryptPasswordEncoder()
-//    }
-//}
