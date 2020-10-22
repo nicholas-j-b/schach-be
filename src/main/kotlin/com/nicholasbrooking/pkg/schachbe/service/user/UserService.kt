@@ -2,10 +2,10 @@ package com.nicholasbrooking.pkg.schachbe.service.user
 
 import com.nicholasbrooking.pkg.schachbe.domain.entity.service.UserEntityService
 import com.nicholasbrooking.pkg.schachbe.domain.model.user.UserDto
-import com.nicholasbrooking.pkg.schachbe.domain.entity.user.User
 import com.nicholasbrooking.pkg.schachbe.domain.model.user.NewUserDto
 import com.nicholasbrooking.pkg.schachbe.domain.model.user.UserRole
 import com.nicholasbrooking.pkg.schachbe.domain.repository.UserRepository
+import com.nicholasbrooking.pkg.schachbe.service.exception.data.SchachbeUserAlreadyExists
 import org.springframework.stereotype.Service
 
 @Service
@@ -23,6 +23,9 @@ class UserService(
     }
 
     fun addUser(newUserDto: NewUserDto) {
+        if (getUserExists(newUserDto.username)) {
+            throw SchachbeUserAlreadyExists("Username: ${newUserDto.username} already exists")
+        }
         newUserDto.userRoles += UserRole.PLAYER
         userEntityService.createNewUser(newUserDto)
     }

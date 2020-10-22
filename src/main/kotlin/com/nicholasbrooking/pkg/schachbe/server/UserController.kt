@@ -27,10 +27,10 @@ class UserController(
         }
     }
 
-    override fun registerNewUser(newUserDto: NewUserDto): ResponseEntity<MessageDto> {
+    override fun registerNewUser(newUserDto: NewUserDto): ResponseEntity<Boolean> {
         requestReceiver.schachfishReceive {
             userService.addUser(newUserDto.toInternalDto())
-            return ResponseEntity.ok(SuccessMessage().toApiDto())
+            return ResponseEntity.ok(true)
         }
     }
 

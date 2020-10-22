@@ -1,6 +1,7 @@
 package com.nicholasbrooking.pkg.schachbe.server
 
 import com.nicholasbrooking.pkg.schachbe.service.exception.data.SchachbeInvalidState
+import com.nicholasbrooking.pkg.schachbe.service.exception.data.SchachbeUserAlreadyExists
 import org.springframework.http.HttpStatus
 import org.springframework.web.server.ResponseStatusException
 
@@ -10,6 +11,8 @@ class RequestReceiver() {
             return block()
         } catch (e: SchachbeInvalidState) {
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Invalid state", e)
+        } catch (e: SchachbeUserAlreadyExists) {
+            throw ResponseStatusException(HttpStatus.FORBIDDEN, "Username already exists", e)
         }
     }
 }
