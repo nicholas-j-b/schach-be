@@ -11,7 +11,7 @@ enum class UserRole {
 
 data class NewUserDto(
         val username: String,
-        val password: String,
+        var password: String,
         val enabled: Boolean,
         val userRoles: MutableList<UserRole>
 )

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service
 class UserService(
         private val userEntityService: UserEntityService,
         private val userRepository: UserRepository,
-        private val authorityService: AuthorityService
+        private val securityService: SecurityService
 ) {
     fun getUserExists(username: String): Boolean {
         return userRepository.existsById(username)
@@ -27,6 +27,7 @@ class UserService(
             throw SchachbeUserAlreadyExists("Username: ${newUserDto.username} already exists")
         }
         newUserDto.userRoles += UserRole.PLAYER
+        newUserDto.password = securityService.encryptPassword(newUserDto.password)
         userEntityService.createNewUser(newUserDto)
     }
 
