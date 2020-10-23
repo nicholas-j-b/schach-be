@@ -14,6 +14,14 @@ import org.springframework.stereotype.Service
 class UserEntityService(
         private val userRepository: UserRepository
 ) {
+    fun getByUsername(username: String): User {
+        return userRepository.getOne(username)
+    }
+
+    fun getByUsernames(usernames: List<String>): List<User> {
+        return userRepository.findAllById(usernames)
+    }
+
     fun getAllUsers(): List<UserDto> {
         return userRepository.findAll().map { it.toInternalDto() }
     }

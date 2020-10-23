@@ -23,10 +23,13 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springframework.boot:spring-boot-starter-websocket")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+//	implementation("org.springframework.boot:spring-boot-starter-data-redis")
 	implementation("org.springframework.boot:spring-boot-starter-webflux")
 	implementation("org.springframework.boot:spring-boot-starter-security")
 
 	implementation("org.projectreactor:reactor-spring:1.0.1.RELEASE")
+
+//	implementation("redis.clients:jedis:3.3.0")
 
 	implementation("com.squareup.moshi:moshi-kotlin:1.9.3")
 

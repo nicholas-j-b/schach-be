@@ -9,7 +9,4 @@ data class Authority(
         @Id
         @Column(nullable = false)
         val userRole: String
-
-//        @ManyToMany(mappedBy = "userRoles")
-//        val users: Set<User>
 )

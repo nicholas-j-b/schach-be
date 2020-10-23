@@ -1,5 +1,7 @@
 package com.nicholasbrooking.pkg.schachbe.domain.entity.user
 
+import com.nicholasbrooking.pkg.schachbe.domain.entity.game.Game
+import com.nicholasbrooking.pkg.schachbe.domain.entity.game.GameUser
 import javax.persistence.*
 
 @Entity
