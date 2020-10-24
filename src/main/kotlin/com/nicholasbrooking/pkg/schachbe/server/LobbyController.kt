@@ -2,10 +2,7 @@ package com.nicholasbrooking.pkg.schachbe.server
 
 
 import com.nicholasbrooking.pkg.schachbe.api.LobbyApi
-import com.nicholasbrooking.pkg.schachbe.api.model.CreateGameDto
-import com.nicholasbrooking.pkg.schachbe.api.model.GameInfo
-import com.nicholasbrooking.pkg.schachbe.api.model.GameType
-import com.nicholasbrooking.pkg.schachbe.api.model.JoinGameDto
+import com.nicholasbrooking.pkg.schachbe.api.model.*
 import com.nicholasbrooking.pkg.schachbe.service.lobby.LobbyService
 import com.nicholasbrooking.pkg.schachbe.service.mapping.toInternalDto
 import com.nicholasbrooking.pkg.schachbe.service.mapping.toInternalEnum
@@ -15,6 +12,7 @@ import org.springframework.web.bind.annotation.CrossOrigin
 
 @Controller
 @CrossOrigin
+@ExperimentalStdlibApi
 class LobbyController(
         private val lobbyService: LobbyService
 ) : LobbyApi {
@@ -27,11 +25,11 @@ class LobbyController(
         }
     }
 
-    override fun getAllGamesInLobby(gameType: GameType?): ResponseEntity<MutableList<GameInfo>> {
+    override fun getAllGamesInLobby(gameType: GameType?): ResponseEntity<MutableList<GameInfoDto>> {
         TODO("Not yet implemented")
     }
 
-    override fun joinGame(gameType: GameType?, gameId: Long?, joinGameDto: JoinGameDto?): ResponseEntity<MutableList<GameInfo>> {
+    override fun joinGame(gameType: GameType?, gameId: Long?, joinGameDto: JoinGameDto?): ResponseEntity<MutableList<GameInfoDto>> {
         TODO("Not yet implemented")
     }
 }

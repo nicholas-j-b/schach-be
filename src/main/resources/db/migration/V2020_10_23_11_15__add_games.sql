@@ -1,5 +1,5 @@
 CREATE TABLE game(
-	id bigint NOT NULL PRIMARY KEY,
+	id bigint NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	game_state varchar(255) NOT NULL,
 	board_id bigint
 );
@@ -7,7 +7,7 @@ CREATE TABLE game(
 CREATE UNIQUE INDEX ix_game_id ON game(id);
 
 CREATE TABLE game_user(
-	id bigint NOT NULL PRIMARY KEY,
+	id bigint NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	username varchar(255) NOT NULL,
 	game_id bigint NOT NULL,
 	colour varchar(255),

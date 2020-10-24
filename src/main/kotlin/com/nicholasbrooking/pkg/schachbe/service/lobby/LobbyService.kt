@@ -9,6 +9,7 @@ import com.nicholasbrooking.pkg.schachbe.service.util.RandomService
 import org.springframework.stereotype.Service
 
 @Service
+@ExperimentalStdlibApi
 class LobbyService(
         private val gameService: GameService,
         private val randomService: RandomService,
@@ -18,7 +19,7 @@ class LobbyService(
         val boardStateDto = boardService.createBoardStateDto(gameType)
         val boardId = boardService.createBoardFromState(boardStateDto)
                 ?: throw SchachbeCannotCreateBoard("Schachfish failed to create board")
-        val createGameDto = getCreateGameDto(gameRequestDto, boardId.id)
+        val createGameDto = getCreateGameDto(gameRequestDto, boardId)
         gameService.createGame(createGameDto)
     }
 

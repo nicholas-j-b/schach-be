@@ -35,3 +35,10 @@ fun com.nicholasbrooking.pkg.schachbe.api.model.GameType.toInternalEnum(): GameT
         com.nicholasbrooking.pkg.schachbe.api.model.GameType.STANDARD -> GameType.STANDARD
     }
 }
+
+fun com.nicholasbrooking.pkg.schachbe.api.model.Colour.toInternalEnum(): Colour {
+    return when (this) {
+        com.nicholasbrooking.pkg.schachbe.api.model.Colour.BLACK -> Colour.BLACK
+        com.nicholasbrooking.pkg.schachbe.api.model.Colour.WHITE -> Colour.WHITE
+    }
+}

@@ -17,3 +17,10 @@ fun com.nicholasbrooking.pkg.schachbe.domain.model.message.SuccessMessage.toApiD
     return MessageDto()
             .message(this.message)
 }
+
+fun com.nicholasbrooking.pkg.schachbe.domain.model.Colour.toApiEnum(): Colour {
+    return when (this) {
+        com.nicholasbrooking.pkg.schachbe.domain.model.Colour.BLACK -> Colour.BLACK
+        com.nicholasbrooking.pkg.schachbe.domain.model.Colour.WHITE -> Colour.WHITE
+    }
+}

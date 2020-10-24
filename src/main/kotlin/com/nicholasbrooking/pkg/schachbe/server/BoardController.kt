@@ -1,7 +1,6 @@
 package com.nicholasbrooking.pkg.schachbe.server
 
 import com.nicholasbrooking.pkg.schachbe.api.BoardApi
-import com.nicholasbrooking.pkg.schachbe.api.model.BoardId
 import com.nicholasbrooking.pkg.schachbe.api.model.BoardStateDto
 import com.nicholasbrooking.pkg.schachbe.api.model.GameType
 import com.nicholasbrooking.pkg.schachbe.service.board.BoardService
@@ -23,7 +22,7 @@ class BoardController(
         TODO("Not yet implemented")
     }
 
-    override fun getAllBoardIds(): ResponseEntity<List<BoardId>> {
+    override fun getAllBoardIds(): ResponseEntity<List<Long>> {
         requestReceiver.schachfishReceive {
             return ResponseEntity.ok(boardService.getAllActiveBoardIds())
         }
@@ -32,5 +31,4 @@ class BoardController(
     override fun getBoard(boardId: Long?): ResponseEntity<BoardStateDto> {
         TODO("Not yet implemented")
     }
-
 }

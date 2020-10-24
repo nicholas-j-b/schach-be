@@ -1,11 +1,14 @@
 package com.nicholasbrooking.pkg.schachbe.domain.entity.service
 
+import com.nicholasbrooking.pkg.schachbe.domain.entity.board.BoardState
 import com.nicholasbrooking.pkg.schachbe.domain.entity.game.Game
+import com.nicholasbrooking.pkg.schachbe.domain.entity.game.GameStartingPosition
 import com.nicholasbrooking.pkg.schachbe.domain.entity.game.GameUser
 import com.nicholasbrooking.pkg.schachbe.domain.entity.user.User
 import com.nicholasbrooking.pkg.schachbe.domain.model.game.CreateGameDto
 import com.nicholasbrooking.pkg.schachbe.domain.model.game.GameUserDto
 import com.nicholasbrooking.pkg.schachbe.domain.repository.GameRepository
+import com.nicholasbrooking.pkg.schachbe.domain.repository.GameStartingPositionRepository
 import com.nicholasbrooking.pkg.schachbe.domain.repository.GameUserRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -14,8 +17,14 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class GameEntityService(
         private val gameRepository: GameRepository,
-        private val gameUserRepository: GameUserRepository
+        private val gameUserRepository: GameUserRepository,
+        private val gameStartingPositionRepository: GameStartingPositionRepository
 ) {
+    @Transactional
+    fun getAllGameStartingPositionsForUser(username: String): List<GameStartingPosition> {
+        return emptyList()
+    }
+
     @Transactional
     fun createGame(createGameDto: CreateGameDto): Game {
         val game = Game(
@@ -26,6 +35,7 @@ class GameEntityService(
         return gameRepository.save(game)
     }
 
+    @Transactional
     fun createGameUsers(game: Game, gameUsersWithUsesr: Map<GameUserDto, User>) {
         val gameUsers = gameUsersWithUsesr.map {
             GameUser(
@@ -36,5 +46,16 @@ class GameEntityService(
             )
         }
         gameUserRepository.saveAll(gameUsers)
+    }
+
+    @Transactional
+    fun addGameStartingPosition(creatorUsername: String, positionName: String, boardState: BoardState): Long {
+        val gameStartingPosition = GameStartingPosition(
+                creatorUsername = creatorUsername,
+                positionName = positionName,
+                boardState = boardState
+        )
+        gameStartingPositionRepository.save(gameStartingPosition)
+        return gameStartingPosition.id
     }
 }
