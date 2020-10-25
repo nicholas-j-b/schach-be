@@ -2,6 +2,7 @@ package com.nicholasbrooking.pkg.schachbe.configuration
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.http.HttpMethod
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
@@ -34,6 +35,7 @@ class SecurityConfig(
                 .authorizeRequests()
                 .antMatchers("/health/**").permitAll()
                 .antMatchers("/user/new/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/game/state/**").permitAll()
                 .antMatchers("/**/admin/**").hasRole("ADMIN")
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()

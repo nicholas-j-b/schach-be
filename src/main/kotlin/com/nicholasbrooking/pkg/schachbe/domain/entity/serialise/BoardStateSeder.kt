@@ -13,6 +13,9 @@ class BoardStateSeder {
     private var index: Int = 0
 
     fun bytesToHistory(blob: Blob): List<MoveCollectionDto> {
+        if (blob.length() == 0L) {
+            return emptyList()
+        }
         val bytes = blob.getBytes(1, blob.length().toInt())
         index = 0
         val moveCollectionDtos = mutableListOf<MoveCollectionDto>()

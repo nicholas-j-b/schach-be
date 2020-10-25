@@ -16,7 +16,7 @@ class GameStartingPosition (
     @Column(nullable = false)
     val positionName: String,
 
-    @ManyToOne
+    @ManyToOne(cascade = [CascadeType.ALL])
     @JoinColumn(name = "board_state_id")
     val boardState: BoardState
 )

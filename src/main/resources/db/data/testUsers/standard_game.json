@@ -1,0 +1,240 @@
+{
+  "blackStatus": {
+    "canCastleKingSide": true,
+    "canCastleQueenSide": true,
+    "pieces": [
+      {
+        "position": {
+          "x": 7,
+          "y": 4
+        },
+        "name": "king"
+      },
+      {
+        "position": {
+          "x": 7,
+          "y": 3
+        },
+        "name": "queen"
+      },
+      {
+        "position": {
+          "x": 7,
+          "y": 2
+        },
+        "name": "bishop"
+      },
+      {
+        "position": {
+          "x": 7,
+          "y": 5
+        },
+        "name": "bishop"
+      },
+      {
+        "position": {
+          "x": 7,
+          "y": 1
+        },
+        "name": "knight"
+      },
+      {
+        "position": {
+          "x": 7,
+          "y": 6
+        },
+        "name": "knight"
+      },
+      {
+        "position": {
+          "x": 7,
+          "y": 0
+        },
+        "name": "rook"
+      },
+      {
+        "position": {
+          "x": 7,
+          "y": 7
+        },
+        "name": "rook"
+      },
+      {
+        "position": {
+          "x": 0,
+          "y": 6
+        },
+        "name": "pawn"
+      },
+      {
+        "position": {
+          "x": 1,
+          "y": 6
+        },
+        "name": "pawn"
+      },
+      {
+        "position": {
+          "x": 2,
+          "y": 6
+        },
+        "name": "pawn"
+      },
+      {
+        "position": {
+          "x": 3,
+          "y": 6
+        },
+        "name": "pawn"
+      },
+      {
+        "position": {
+          "x": 4,
+          "y": 6
+        },
+        "name": "pawn"
+      },
+      {
+        "position": {
+          "x": 5,
+          "y": 6
+        },
+        "name": "pawn"
+      },
+      {
+        "position": {
+          "x": 6,
+          "y": 6
+        },
+        "name": "pawn"
+      },
+      {
+        "position": {
+          "x": 7,
+          "y": 6
+        },
+        "name": "pawn"
+      }
+    ]
+  },
+  "whiteStatus": {
+    "canCastleKingSide": true,
+    "canCastleQueenSide": true,
+    "pieces": [
+      {
+        "position": {
+          "x": 4,
+          "y": 0
+        },
+        "name": "king"
+      },
+      {
+        "position": {
+          "x": 3,
+          "y": 0
+        },
+        "name": "queen"
+      },
+      {
+        "position": {
+          "x": 2,
+          "y": 0
+        },
+        "name": "bishop"
+      },
+      {
+        "position": {
+          "x": 5,
+          "y": 0
+        },
+        "name": "bishop"
+      },
+      {
+        "position": {
+          "x": 1,
+          "y": 0
+        },
+        "name": "knight"
+      },
+      {
+        "position": {
+          "x": 6,
+          "y": 0
+        },
+        "name": "knight"
+      },
+      {
+        "position": {
+          "x": 0,
+          "y": 0
+        },
+        "name": "rook"
+      },
+      {
+        "position": {
+          "x": 7,
+          "y": 0
+        },
+        "name": "rook"
+      },
+      {
+        "position": {
+          "x": 0,
+          "y": 1
+        },
+        "name": "pawn"
+      },
+      {
+        "position": {
+          "x": 1,
+          "y": 1
+        },
+        "name": "pawn"
+      },
+      {
+        "position": {
+          "x": 2,
+          "y": 1
+        },
+        "name": "pawn"
+      },
+      {
+        "position": {
+          "x": 3,
+          "y": 1
+        },
+        "name": "pawn"
+      },
+      {
+        "position": {
+          "x": 4,
+          "y": 1
+        },
+        "name": "pawn"
+      },
+      {
+        "position": {
+          "x": 5,
+          "y": 1
+        },
+        "name": "pawn"
+      },
+      {
+        "position": {
+          "x": 6,
+          "y": 1
+        },
+        "name": "pawn"
+      },
+      {
+        "position": {
+          "x": 7,
+          "y": 1
+        },
+        "name": "pawn"
+      }
+    ]
+  },
+  "turn": "white",
+  "history": []
+}
