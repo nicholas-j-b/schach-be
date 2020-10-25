@@ -2,23 +2,11 @@ package com.nicholasbrooking.pkg.schachbe.domain.entity.service
 
 import com.nicholasbrooking.pkg.schachbe.api.model.*
 import com.nicholasbrooking.pkg.schachbe.domain.entity.board.BoardState
-import com.nicholasbrooking.pkg.schachbe.domain.entity.game.Game
-import com.nicholasbrooking.pkg.schachbe.domain.entity.game.GameStartingPosition
-import com.nicholasbrooking.pkg.schachbe.domain.entity.game.GameUser
-import com.nicholasbrooking.pkg.schachbe.domain.entity.user.User
-import com.nicholasbrooking.pkg.schachbe.domain.model.game.CreateGameDto
-import com.nicholasbrooking.pkg.schachbe.domain.model.game.GameUserDto
 import com.nicholasbrooking.pkg.schachbe.domain.repository.BoardStateRepository
-import com.nicholasbrooking.pkg.schachbe.domain.repository.GameRepository
-import com.nicholasbrooking.pkg.schachbe.domain.repository.GameStartingPositionRepository
-import com.nicholasbrooking.pkg.schachbe.domain.repository.GameUserRepository
 import com.nicholasbrooking.pkg.schachbe.service.exception.data.SchachbeInvalidState
 import com.nicholasbrooking.pkg.schachbe.service.mapping.toApiEnum
 import com.nicholasbrooking.pkg.schachbe.service.mapping.toInternalEnum
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
-import java.io.ByteArrayOutputStream
-import java.io.ObjectOutputStream
 import java.sql.Blob
 import javax.sql.rowset.serial.SerialBlob
 
@@ -38,38 +26,40 @@ class BoardEntityService(
         return boardStateRepository.save(boardState)
     }
 
-//    fun boardStateToDto(boardState: BoardState): BoardStateDto {
-//        return BoardStateDto()
-//                .whiteStatus(bytesToColourStatusDto(boardState.whiteStatusDto))
-//                .blackStatus(bytesToColourStatusDto(boardState.blackStatusDto))
-//                .turn(boardState.turn.toApiEnum())
-//                .history(bytesToHistory(boardState.history))
-//    }
+    fun boardStateEntityToDto(boardState: BoardState): BoardStateDto {
+        return BoardStateDto()
+                .whiteStatus(bytesToColourStatusDto(boardState.whiteStatusDto))
+                .blackStatus(bytesToColourStatusDto(boardState.blackStatusDto))
+                .turn(boardState.turn.toApiEnum())
+                .history(bytesToHistory(boardState.history))
+    }
 
-    private fun bytesToHistory(blob: List<Byte>): List<MoveCollectionDto> {
+    private fun bytesToHistory(blob: Blob): List<MoveCollectionDto> {
+        val bytes = blob.getBytes(1, blob.length().toInt())
         var index = 0
         val moveCollectionDtos = mutableListOf<MoveCollectionDto>()
         while(true) {
-            val numMoves = blob[index]
+            val numMoves = bytes[index]
             index += 1
             val moveDtos = mutableListOf<MoveDto>()
             for (i in 0 until numMoves) {
-                val fromX = blob[index]
+                val fromX = bytes[index]
                 index += 1
-                val fromY = blob[index]
+                val fromY = bytes[index]
                 index += 1
-                val toX = blob[index]
+                val toX = bytes[index]
                 index += 1
-                val toY = blob[index]
+                val toY = bytes[index]
                 index += 1
-                val takenX = blob[index]
+                val takenX = bytes[index]
                 index += 1
-                val takenY = blob[index]
+                val takenY = bytes[index]
                 index += 1
                 val promoteBytes = mutableListOf<Byte>()
                 while (true) {
-                    val char = promoteBytes[index]
+                    val char = bytes[index]
                     if (char == 0.toByte()) {
+                        index += 1
                         break
                     }
                     promoteBytes.add(char)
@@ -79,22 +69,23 @@ class BoardEntityService(
                         .from(PositionDto().x(fromX.toInt()).y(fromY.toInt()))
                         .to(PositionDto().x(toX.toInt()).y(toY.toInt()))
                         .takenPiece(PositionDto().x(takenX.toInt()).y(takenY.toInt()))
-                        .promoteTo(PieceName.valueOf(promoteBytes.toByteArray().decodeToString()))
+                        .promoteTo(PieceName.fromValue(promoteBytes.toByteArray().decodeToString()))
                 )
             }
             moveCollectionDtos.add(MoveCollectionDto().moves(moveDtos))
-            if (index >= blob.size) {
+            if (index >= bytes.size) {
                 break
             }
         }
         return moveCollectionDtos
     }
 
-    private fun bytesToColourStatusDto(blob: List<Byte>): ColourStatusDto {
-        val piecesBytes = blob.drop(2)
+    private fun bytesToColourStatusDto(blob: Blob): ColourStatusDto {
+        val bytes = blob.getBytes(1, blob.length().toInt())
+        val piecesBytes = bytes.drop(2)
         val pieces = mutableListOf<PieceDto>()
         var index = 0
-        while (index < blob.size - 2) {
+        while (index < bytes.size - 2) {
             val xpos = piecesBytes[index]
             index += 1
             val ypos = piecesBytes[index]
@@ -103,6 +94,7 @@ class BoardEntityService(
             while (true) {
                 val char = piecesBytes[index]
                 if (char == 0.toByte()) {
+                    index += 1
                     break
                 }
                 pieceName.add(char)
@@ -115,8 +107,8 @@ class BoardEntityService(
         }
 
         return ColourStatusDto()
-                .canCastleKingSide(blob[0].toBoolean())
-                .canCastleQueenSide(blob[1].toBoolean())
+                .canCastleKingSide(bytes[0].toBoolean())
+                .canCastleQueenSide(bytes[1].toBoolean())
                 .pieces(pieces)
     }
 
@@ -130,10 +122,6 @@ class BoardEntityService(
             blob.add(pieceDto.position.y.toByte())
             blob += pieceDto.name.toBytesWithTerminator()
         }
-//        val baos = ByteArrayOutputStream()
-//        val oout = ObjectOutputStream(baos)
-//        oout.writeObject(blob)
-//        oout.close()
         val b = SerialBlob(blob.toByteArray())
         return b
     }

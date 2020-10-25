@@ -25,8 +25,13 @@ class GameService (
         return gameEntityService.addGameStartingPosition(username, positionName, boardState)
     }
 
-    fun getGameStateForUser(username: String) {
+    fun getGameStateNamesForUser(username: String): List<String> {
+        return gameEntityService.getAllGameStartingPositionsForUser(username).map { it.positionName }
+    }
 
+    fun getGameState(username: String, positionName: String): BoardStateDto {
+        val boardState = gameEntityService.getGameStartingPosition(username, positionName).boardState
+        return boardEntityService.boardStateEntityToDto(boardState)
     }
 
 }

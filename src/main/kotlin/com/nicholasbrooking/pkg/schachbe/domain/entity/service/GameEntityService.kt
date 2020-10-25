@@ -22,7 +22,12 @@ class GameEntityService(
 ) {
     @Transactional
     fun getAllGameStartingPositionsForUser(username: String): List<GameStartingPosition> {
-        return emptyList()
+        return gameStartingPositionRepository.findAllByCreatorUsername(username)
+    }
+
+    @Transactional
+    fun getGameStartingPosition(username: String, positionName: String): GameStartingPosition {
+        return gameStartingPositionRepository.getByCreatorUsernameAndPositionName(username, positionName)
     }
 
     @Transactional

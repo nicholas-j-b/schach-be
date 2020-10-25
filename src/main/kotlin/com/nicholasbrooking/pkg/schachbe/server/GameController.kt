@@ -21,9 +21,17 @@ class GameController(
         }
     }
 
-    override fun getGameStatesForUser(username: Long): ResponseEntity<List<BoardStateDto>> {
+    override fun getGameStateNamesForUser(username: String): ResponseEntity<List<String>> {
         requestReceiver.schachfishReceive {
-            return ResponseEntity.ok(emptyList())
+            val gameStateNames = gameService.getGameStateNamesForUser(username)
+            return ResponseEntity.ok(gameStateNames)
+        }
+    }
+
+    override fun getGameStatesForUser(username: String, positionName: String): ResponseEntity<BoardStateDto> {
+        requestReceiver.schachfishReceive {
+            val gameStateNames = gameService.getGameState(username, positionName)
+            return ResponseEntity.ok(gameStateNames)
         }
     }
 }
