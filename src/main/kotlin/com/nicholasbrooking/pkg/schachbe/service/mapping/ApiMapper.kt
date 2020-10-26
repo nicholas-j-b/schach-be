@@ -24,3 +24,38 @@ fun com.nicholasbrooking.pkg.schachbe.domain.model.Colour.toApiEnum(): Colour {
         com.nicholasbrooking.pkg.schachbe.domain.model.Colour.WHITE -> Colour.WHITE
     }
 }
+
+fun com.nicholasbrooking.pkg.schachbe.domain.model.game.GameState.toApiEnum(): GameState {
+    return when(this) {
+        com.nicholasbrooking.pkg.schachbe.domain.model.game.GameState.OPEN -> GameState.OPEN
+        com.nicholasbrooking.pkg.schachbe.domain.model.game.GameState.ACTIVE -> GameState.ACTIVE
+        com.nicholasbrooking.pkg.schachbe.domain.model.game.GameState.INACTIVE -> GameState.INACTIVE
+        com.nicholasbrooking.pkg.schachbe.domain.model.game.GameState.COMPLETE -> GameState.COMPLETE
+    }
+}
+
+fun com.nicholasbrooking.pkg.schachbe.domain.model.game.GameInfoDto.toApiDto(): GameInfoDto {
+    return GameInfoDto().gameType(this.gameType.toApiEnum())
+            .gameState(this.gameState.toApiEnum())
+            .participants(this.participants.map { it.toApiDto() })
+}
+
+fun com.nicholasbrooking.pkg.schachbe.domain.model.game.GameUserDto.toApiDto(): GameUserDto {
+    return GameUserDto()
+            .username(this.username)
+            .participationType(this.participationType.toApiEnum())
+            .colour(this.colour.toApiEnum())
+}
+
+fun com.nicholasbrooking.pkg.schachbe.domain.model.game.ParticipationType.toApiEnum(): ParticipationType {
+    return when(this) {
+        com.nicholasbrooking.pkg.schachbe.domain.model.game.ParticipationType.PLAYER -> ParticipationType.PLAYER
+        com.nicholasbrooking.pkg.schachbe.domain.model.game.ParticipationType.SPECTATOR -> ParticipationType.SPECTATOR
+    }
+}
+
+fun com.nicholasbrooking.pkg.schachbe.domain.model.game.GameType.toApiEnum(): GameType {
+    return when(this) {
+        com.nicholasbrooking.pkg.schachbe.domain.model.game.GameType.STANDARD -> GameType.STANDARD
+    }
+}

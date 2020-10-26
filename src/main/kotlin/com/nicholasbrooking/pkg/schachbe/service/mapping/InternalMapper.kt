@@ -36,6 +36,15 @@ fun com.nicholasbrooking.pkg.schachbe.api.model.GameType.toInternalEnum(): GameT
     }
 }
 
+fun com.nicholasbrooking.pkg.schachbe.api.model.GameState.toInternalEnum(): GameState {
+    return when (this) {
+        com.nicholasbrooking.pkg.schachbe.api.model.GameState.COMPLETE -> GameState.COMPLETE
+        com.nicholasbrooking.pkg.schachbe.api.model.GameState.OPEN -> GameState.OPEN
+        com.nicholasbrooking.pkg.schachbe.api.model.GameState.ACTIVE -> GameState.ACTIVE
+        com.nicholasbrooking.pkg.schachbe.api.model.GameState.INACTIVE -> GameState.INACTIVE
+    }
+}
+
 fun com.nicholasbrooking.pkg.schachbe.api.model.Colour.toInternalEnum(): Colour {
     return when (this) {
         com.nicholasbrooking.pkg.schachbe.api.model.Colour.BLACK -> Colour.BLACK

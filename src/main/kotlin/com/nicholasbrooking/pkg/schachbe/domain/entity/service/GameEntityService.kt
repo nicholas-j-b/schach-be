@@ -5,8 +5,8 @@ import com.nicholasbrooking.pkg.schachbe.domain.entity.game.Game
 import com.nicholasbrooking.pkg.schachbe.domain.entity.game.GameStartingPosition
 import com.nicholasbrooking.pkg.schachbe.domain.entity.game.GameUser
 import com.nicholasbrooking.pkg.schachbe.domain.entity.user.User
-import com.nicholasbrooking.pkg.schachbe.domain.model.game.CreateGameDto
-import com.nicholasbrooking.pkg.schachbe.domain.model.game.GameUserDto
+import com.nicholasbrooking.pkg.schachbe.domain.mapping.toInternalDto
+import com.nicholasbrooking.pkg.schachbe.domain.model.game.*
 import com.nicholasbrooking.pkg.schachbe.domain.repository.GameRepository
 import com.nicholasbrooking.pkg.schachbe.domain.repository.GameStartingPositionRepository
 import com.nicholasbrooking.pkg.schachbe.domain.repository.GameUserRepository
@@ -35,7 +35,8 @@ class GameEntityService(
         val game = Game(
                 gameState = createGameDto.gameState,
                 gameUsers = mutableListOf(),
-                boardId = createGameDto.boardId
+                boardId = createGameDto.boardId,
+                gameType = createGameDto.gameType
         )
         return gameRepository.save(game)
     }
@@ -62,5 +63,15 @@ class GameEntityService(
         )
         gameStartingPositionRepository.save(gameStartingPosition)
         return gameStartingPosition.id
+    }
+
+    @Transactional
+    fun getAllGamesBy(gameType: GameType, gameState: GameState): List<GameInfoDto> {
+        return gameRepository.findAllByGameTypeAndGameState(gameType, gameState).map { it.toInternalDto() }
+    }
+
+    @Transactional
+    fun getAllGamesBy(gameType: GameType): List<GameInfoDto> {
+        return gameRepository.findAllByGameType(gameType).map { it.toInternalDto() }
     }
 }

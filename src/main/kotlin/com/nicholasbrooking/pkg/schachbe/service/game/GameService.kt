@@ -5,6 +5,9 @@ import com.nicholasbrooking.pkg.schachbe.domain.entity.service.BoardEntityServic
 import com.nicholasbrooking.pkg.schachbe.domain.entity.service.GameEntityService
 import com.nicholasbrooking.pkg.schachbe.domain.entity.service.UserEntityService
 import com.nicholasbrooking.pkg.schachbe.domain.model.game.CreateGameDto
+import com.nicholasbrooking.pkg.schachbe.domain.model.game.GameInfoDto
+import com.nicholasbrooking.pkg.schachbe.domain.model.game.GameState
+import com.nicholasbrooking.pkg.schachbe.domain.model.game.GameType
 import org.springframework.stereotype.Service
 
 @Service
@@ -34,4 +37,11 @@ class GameService (
         return boardEntityService.boardStateEntityToDto(boardState)
     }
 
+    fun getAllGameInfoDtosBy(gameType: GameType, gameState: GameState): List<GameInfoDto> {
+        return gameEntityService.getAllGamesBy(gameType, gameState)
+    }
+
+    fun getAllGameInfoDtosBy(gameType: GameType): List<GameInfoDto> {
+        return gameEntityService.getAllGamesBy(gameType)
+    }
 }

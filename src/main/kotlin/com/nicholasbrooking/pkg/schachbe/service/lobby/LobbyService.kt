@@ -47,4 +47,12 @@ class LobbyService(
                 boardId = boardId
         )
     }
+
+    fun getAllGames(gameType: GameType, gameState: GameState?): List<GameInfoDto> {
+        return if (gameState != null) {
+            gameService.getAllGameInfoDtosBy(gameType)
+        } else {
+            gameService.getAllGameInfoDtosBy(gameType, GameState.OPEN)
+        }
+    }
 }

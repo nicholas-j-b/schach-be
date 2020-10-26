@@ -1,6 +1,7 @@
 package com.nicholasbrooking.pkg.schachbe.domain.entity.game
 
 import com.nicholasbrooking.pkg.schachbe.domain.model.game.GameState
+import com.nicholasbrooking.pkg.schachbe.domain.model.game.GameType
 import javax.persistence.*
 
 @Entity
@@ -18,5 +19,8 @@ class Game(
         val gameUsers: MutableList<GameUser>,
 
         @Column(nullable = false)
-        val boardId: Long
+        val boardId: Long,
+
+        @Column(nullable = false)
+        val gameType: GameType
 )
