@@ -62,7 +62,9 @@ class LobbyService(
 
     fun joinGame(gameType: GameType, gameId: Long, gameUserDto: GameUserDto) {
         userAuthenticationService.checkUserIsUsername(gameUserDto.username, SchachbeUserDisallowed())
+        TODO("join game")
         // set active game of user
         // add gameuser -> add game to user / user to game
+        // attempt websocket connection
     }
 }
