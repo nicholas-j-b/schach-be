@@ -20,10 +20,10 @@ class LobbyController(
 ) : LobbyApi {
     private val requestReceiver = RequestReceiver()
 
-    override fun createGame(gameType: GameType, createGameDto: CreateGameDto): ResponseEntity<Boolean> {
+    override fun createGame(gameType: GameType, createGameDto: CreateGameDto): ResponseEntity<Long> {
         requestReceiver.schachfishReceive {
-            lobbyService.createGame(gameType.toInternalEnum(), createGameDto.toInternalDto())
-            return ResponseEntity.ok(true)
+            val gameId = lobbyService.createGame(gameType.toInternalEnum(), createGameDto.toInternalDto())
+            return ResponseEntity.ok(gameId)
         }
     }
 
@@ -32,7 +32,7 @@ class LobbyController(
             val allGames = if (gameState.isPresent) {
                 lobbyService.getAllGames(gameType.toInternalEnum(), gameState.get().toInternalEnum())
             } else {
-                lobbyService.getAllGames(gameType.toInternalEnum(), null)
+                lobbyService.getAllGames(gameType.toInternalEnum())
             }
             return ResponseEntity.ok(allGames.map { it.toApiDto() })
         }

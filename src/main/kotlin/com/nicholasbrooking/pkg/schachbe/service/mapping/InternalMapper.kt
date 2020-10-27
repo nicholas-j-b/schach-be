@@ -1,6 +1,6 @@
 package com.nicholasbrooking.pkg.schachbe.service.mapping
 
-import com.nicholasbrooking.pkg.schachbe.domain.model.Colour
+import com.nicholasbrooking.pkg.schachbe.domain.model.game.Colour
 import com.nicholasbrooking.pkg.schachbe.domain.model.user.*
 import com.nicholasbrooking.pkg.schachbe.domain.model.game.*
 

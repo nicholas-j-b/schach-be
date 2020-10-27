@@ -1,6 +1,6 @@
 package com.nicholasbrooking.pkg.schachbe.service.util
 
-import com.nicholasbrooking.pkg.schachbe.domain.model.Colour
+import com.nicholasbrooking.pkg.schachbe.domain.model.game.Colour
 import org.springframework.stereotype.Service
 import kotlin.random.Random
 

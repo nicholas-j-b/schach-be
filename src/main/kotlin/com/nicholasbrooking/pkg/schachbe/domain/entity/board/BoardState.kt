@@ -1,6 +1,6 @@
 package com.nicholasbrooking.pkg.schachbe.domain.entity.board
 
-import com.nicholasbrooking.pkg.schachbe.domain.model.Colour
+import com.nicholasbrooking.pkg.schachbe.domain.model.game.Colour
 import org.hibernate.annotations.Type
 import java.sql.Blob
 import javax.persistence.*

@@ -1,7 +1,5 @@
 package com.nicholasbrooking.pkg.schachbe.domain.model.game
 
-import com.nicholasbrooking.pkg.schachbe.domain.model.Colour
-
 
 enum class GameState {
     ACTIVE, INACTIVE, OPEN, COMPLETE

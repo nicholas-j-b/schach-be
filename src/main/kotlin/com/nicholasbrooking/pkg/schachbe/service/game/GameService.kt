@@ -17,10 +17,11 @@ class GameService (
         private val userEntityService: UserEntityService,
         private val boardEntityService: BoardEntityService
 ) {
-    fun createGame(createGameDto: CreateGameDto) {
+    fun createGame(createGameDto: CreateGameDto): Long {
         val game = gameEntityService.createGame(createGameDto)
         val gameUsersWithUser = createGameDto.gameUsers.map { it to userEntityService.getByUsername(it.username)}.toMap()
         gameEntityService.createGameUsers(game, gameUsersWithUser)
+        return game.id
     }
 
     fun addGameStateForUser(username: String, positionName: String, boardStateDto: BoardStateDto): Long {

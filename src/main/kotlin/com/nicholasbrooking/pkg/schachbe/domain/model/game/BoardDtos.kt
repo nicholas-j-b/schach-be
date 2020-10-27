@@ -1,4 +1,4 @@
-package com.nicholasbrooking.pkg.schachbe.domain.model
+package com.nicholasbrooking.pkg.schachbe.domain.model.game
 
 
 enum class Colour {

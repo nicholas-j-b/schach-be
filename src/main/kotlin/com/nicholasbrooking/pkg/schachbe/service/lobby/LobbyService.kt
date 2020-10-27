@@ -1,6 +1,6 @@
 package com.nicholasbrooking.pkg.schachbe.service.lobby
 
-import com.nicholasbrooking.pkg.schachbe.domain.model.Colour
+import com.nicholasbrooking.pkg.schachbe.domain.model.game.Colour
 import com.nicholasbrooking.pkg.schachbe.domain.model.game.*
 import com.nicholasbrooking.pkg.schachbe.service.board.BoardService
 import com.nicholasbrooking.pkg.schachbe.service.exception.data.SchachbeCannotCreateBoard
@@ -15,12 +15,12 @@ class LobbyService(
         private val randomService: RandomService,
         private val boardService: BoardService
 ) {
-    fun createGame(gameType: GameType, gameRequestDto: GameRequestDto) {
+    fun createGame(gameType: GameType, gameRequestDto: GameRequestDto): Long {
         val boardStateDto = boardService.createBoardStateDto(gameType)
         val boardId = boardService.createBoardFromState(boardStateDto)
                 ?: throw SchachbeCannotCreateBoard("Schachfish failed to create board")
         val createGameDto = getCreateGameDto(gameRequestDto, boardId)
-        gameService.createGame(createGameDto)
+        return gameService.createGame(createGameDto)
     }
 
     fun getCreateGameDto(gameRequestDto: GameRequestDto, boardId: Long): CreateGameDto {
@@ -48,11 +48,11 @@ class LobbyService(
         )
     }
 
-    fun getAllGames(gameType: GameType, gameState: GameState?): List<GameInfoDto> {
-        return if (gameState != null) {
-            gameService.getAllGameInfoDtosBy(gameType)
-        } else {
-            gameService.getAllGameInfoDtosBy(gameType, GameState.OPEN)
-        }
+    fun getAllGames(gameType: GameType, gameState: GameState): List<GameInfoDto> {
+        return gameService.getAllGameInfoDtosBy(gameType, gameState)
+    }
+
+    fun getAllGames(gameType: GameType): List<GameInfoDto> {
+        return gameService.getAllGameInfoDtosBy(gameType)
     }
 }

@@ -15,7 +15,7 @@ class Game(
         @Column(nullable = false)
         var gameState: GameState,
 
-        @OneToMany
+        @OneToMany(mappedBy = "game", cascade = [CascadeType.ALL])
         val gameUsers: MutableList<GameUser>,
 
         @Column(nullable = false)

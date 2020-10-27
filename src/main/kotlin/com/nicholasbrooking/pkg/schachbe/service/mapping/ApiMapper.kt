@@ -18,10 +18,10 @@ fun com.nicholasbrooking.pkg.schachbe.domain.model.message.SuccessMessage.toApiD
             .message(this.message)
 }
 
-fun com.nicholasbrooking.pkg.schachbe.domain.model.Colour.toApiEnum(): Colour {
+fun com.nicholasbrooking.pkg.schachbe.domain.model.game.Colour.toApiEnum(): Colour {
     return when (this) {
-        com.nicholasbrooking.pkg.schachbe.domain.model.Colour.BLACK -> Colour.BLACK
-        com.nicholasbrooking.pkg.schachbe.domain.model.Colour.WHITE -> Colour.WHITE
+        com.nicholasbrooking.pkg.schachbe.domain.model.game.Colour.BLACK -> Colour.BLACK
+        com.nicholasbrooking.pkg.schachbe.domain.model.game.Colour.WHITE -> Colour.WHITE
     }
 }
 

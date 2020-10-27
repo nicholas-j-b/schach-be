@@ -17,7 +17,6 @@ class BoardClient(
     private val client = WebClient.create(appProps.schachfishUrl)
     private val listOfLongType = object : ParameterizedTypeReference<List<Long>>() {}
     private val longType = object : ParameterizedTypeReference<Long>() {}
-//    private val boardStateDtoType = object : ParameterizedTypeReference<BoardStateDto>() {}
 
     fun getAllIds(): List<Long> {
         val response = client.get()
