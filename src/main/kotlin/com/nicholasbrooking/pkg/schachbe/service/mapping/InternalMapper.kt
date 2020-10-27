@@ -51,3 +51,18 @@ fun com.nicholasbrooking.pkg.schachbe.api.model.Colour.toInternalEnum(): Colour 
         com.nicholasbrooking.pkg.schachbe.api.model.Colour.WHITE -> Colour.WHITE
     }
 }
+
+fun com.nicholasbrooking.pkg.schachbe.api.model.GameUserDto.toInternalDto(): GameUserDto {
+    return GameUserDto(
+            username = this.username,
+            participationType = this.participationType.toInternalEnum(),
+            colour = this.colour.toInternalEnum()
+    )
+}
+
+fun com.nicholasbrooking.pkg.schachbe.api.model.ParticipationType.toInternalEnum(): ParticipationType {
+    return when(this) {
+        com.nicholasbrooking.pkg.schachbe.api.model.ParticipationType.PLAYER -> ParticipationType.PLAYER
+        com.nicholasbrooking.pkg.schachbe.api.model.ParticipationType.SPECTATOR -> ParticipationType.SPECTATOR
+    }
+}

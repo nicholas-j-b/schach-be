@@ -15,21 +15,21 @@ class GameController(
 ): GameApi {
     private val requestReceiver = RequestReceiver()
     override fun addGameStateForUser(username: String, positionName: String, boardStateDto: BoardStateDto): ResponseEntity<Long> {
-        requestReceiver.schachfishReceive {
+        requestReceiver.schachbeReceive {
             val gameStateId = gameService.addGameStateForUser(username, positionName, boardStateDto)
             return ResponseEntity.ok(gameStateId)
         }
     }
 
     override fun getGameStateNamesForUser(username: String): ResponseEntity<List<String>> {
-        requestReceiver.schachfishReceive {
+        requestReceiver.schachbeReceive {
             val gameStateNames = gameService.getGameStateNamesForUser(username)
             return ResponseEntity.ok(gameStateNames)
         }
     }
 
     override fun getGameStatesForUser(username: String, positionName: String): ResponseEntity<BoardStateDto> {
-        requestReceiver.schachfishReceive {
+        requestReceiver.schachbeReceive {
             val gameStateNames = gameService.getGameState(username, positionName)
             return ResponseEntity.ok(gameStateNames)
         }

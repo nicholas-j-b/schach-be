@@ -21,14 +21,14 @@ class LobbyController(
     private val requestReceiver = RequestReceiver()
 
     override fun createGame(gameType: GameType, createGameDto: CreateGameDto): ResponseEntity<Long> {
-        requestReceiver.schachfishReceive {
+        requestReceiver.schachbeReceive {
             val gameId = lobbyService.createGame(gameType.toInternalEnum(), createGameDto.toInternalDto())
             return ResponseEntity.ok(gameId)
         }
     }
 
     override fun getAllGamesInLobby(gameType: GameType, gameState: Optional<GameState>): ResponseEntity<List<GameInfoDto>> {
-        requestReceiver.schachfishReceive {
+        requestReceiver.schachbeReceive {
             val allGames = if (gameState.isPresent) {
                 lobbyService.getAllGames(gameType.toInternalEnum(), gameState.get().toInternalEnum())
             } else {
@@ -38,7 +38,10 @@ class LobbyController(
         }
     }
 
-    override fun joinGame(gameType: GameType?, gameId: Long?, joinGameDto: JoinGameDto?): ResponseEntity<MutableList<GameInfoDto>> {
-        TODO("Not yet implemented")
+    override fun joinGame(gameType: GameType, gameId: Long, gameUserDto: GameUserDto): ResponseEntity<String> {
+        requestReceiver.schachbeReceive {
+            lobbyService.joinGame(gameType.toInternalEnum(), gameId, gameUserDto.toInternalDto())
+            return ResponseEntity.ok("Success")
+        }
     }
 }

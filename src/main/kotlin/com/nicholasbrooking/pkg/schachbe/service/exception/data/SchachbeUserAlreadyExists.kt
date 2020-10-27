@@ -1,5 +1,5 @@
 package com.nicholasbrooking.pkg.schachbe.service.exception.data
 
-import java.lang.Exception
+import com.nicholasbrooking.pkg.schachbe.service.exception.SchachbeException
 
-class SchachbeUserAlreadyExists (message: String): Exception(message)
+class SchachbeUserAlreadyExists (message: String): SchachbeException(message)

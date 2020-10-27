@@ -1,5 +1,5 @@
 package com.nicholasbrooking.pkg.schachbe.service.exception.data
 
-import java.lang.Exception
+import com.nicholasbrooking.pkg.schachbe.service.exception.SchachbeException
 
-open class SchachbeInvalidState (message: String): Exception(message)
+open class SchachbeInvalidState (message: String): SchachbeException(message)

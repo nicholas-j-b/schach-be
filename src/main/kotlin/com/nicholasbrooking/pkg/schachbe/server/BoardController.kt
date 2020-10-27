@@ -23,7 +23,7 @@ class BoardController(
     }
 
     override fun getAllBoardIds(): ResponseEntity<List<Long>> {
-        requestReceiver.schachfishReceive {
+        requestReceiver.schachbeReceive {
             return ResponseEntity.ok(boardService.getAllActiveBoardIds())
         }
     }
