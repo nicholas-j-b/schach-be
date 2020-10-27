@@ -6,6 +6,7 @@ import com.nicholasbrooking.pkg.schachbe.service.board.BoardService
 import com.nicholasbrooking.pkg.schachbe.service.exception.data.SchachbeCannotCreateBoard
 import com.nicholasbrooking.pkg.schachbe.service.game.GameService
 import com.nicholasbrooking.pkg.schachbe.service.util.RandomService
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
 
 @Service

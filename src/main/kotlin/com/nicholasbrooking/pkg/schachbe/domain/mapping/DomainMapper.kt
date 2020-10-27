@@ -41,7 +41,7 @@ fun Game.toInternalDto(): GameInfoDto {
 
 fun GameUser.toInternalDto(): GameUserDto {
     return GameUserDto(
-            username = this.username,
+            username = this.user.username,
             participationType = this.participationType,
             colour = this.colour
     )

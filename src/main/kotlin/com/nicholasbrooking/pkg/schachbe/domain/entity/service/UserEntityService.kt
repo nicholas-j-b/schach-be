@@ -50,7 +50,8 @@ class UserEntityService(
                 username = newUserDto.username,
                 password = newUserDto.password,
                 enabled = newUserDto.enabled,
-                userRoles = newUserDto.userRoles.mapTo(HashSet()) { Authority(it.toDatabaseString()) }
+                userRoles = newUserDto.userRoles.mapTo(HashSet()) { Authority(it.toDatabaseString()) },
+                activeGame = null
         )
         userRepository.save(user)
     }

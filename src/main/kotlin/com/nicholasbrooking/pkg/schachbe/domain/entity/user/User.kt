@@ -23,5 +23,8 @@ data class User(
                 joinColumns = [ JoinColumn(name = "username") ],
                 inverseJoinColumns = [ JoinColumn(name = "user_role") ]
         )
-        var userRoles: Set<Authority>
+        var userRoles: Set<Authority>,
+
+        @OneToOne(mappedBy = "user", cascade = [CascadeType.ALL])
+        var activeGame: GameUser?
 )

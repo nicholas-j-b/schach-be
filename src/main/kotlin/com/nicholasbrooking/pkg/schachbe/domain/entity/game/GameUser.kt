@@ -1,5 +1,6 @@
 package com.nicholasbrooking.pkg.schachbe.domain.entity.game
 
+import com.nicholasbrooking.pkg.schachbe.domain.entity.user.User
 import com.nicholasbrooking.pkg.schachbe.domain.model.game.Colour
 import com.nicholasbrooking.pkg.schachbe.domain.model.game.ParticipationType
 import javax.persistence.*
@@ -16,8 +17,8 @@ class GameUser(
         @JoinColumn(name = "game_id")
         val game: Game,
 
-        @Column(nullable = false, name = "username")
-        val username: String,
+        @OneToOne @MapsId
+        val user: User,
 
         @Column(nullable = false)
         val participationType: ParticipationType,

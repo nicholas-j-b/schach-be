@@ -46,7 +46,7 @@ class GameEntityService(
         val gameUsers = gameUsersWithUsesr.map {
             GameUser(
                     game = game,
-                    username = it.value.username,
+                    user = it.value,
                     participationType = it.key.participationType,
                     colour = it.key.colour
             )
