@@ -1,6 +1,6 @@
 package com.nicholasbrooking.pkg.schachbe.server
 
-import com.nicholasbrooking.pkg.schachbe.api.GameApi
+import com.nicholasbrooking.pkg.schachbe.api.GameStateApi
 import com.nicholasbrooking.pkg.schachbe.api.model.BoardStateDto
 import com.nicholasbrooking.pkg.schachbe.service.game.GameService
 import org.springframework.http.ResponseEntity
@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.CrossOrigin
 @CrossOrigin
 @Controller
 @ExperimentalStdlibApi
-class GameController(
+class GameStateController(
         private val gameService: GameService
-): GameApi {
+): GameStateApi {
     private val requestReceiver = RequestReceiver()
     override fun addGameStateForUser(username: String, positionName: String, boardStateDto: BoardStateDto): ResponseEntity<Long> {
         requestReceiver.schachbeReceive {
