@@ -1,6 +1,5 @@
 package com.nicholasbrooking.pkg.schachbe.domain.entity.user
 
-import com.nicholasbrooking.pkg.schachbe.domain.entity.game.Game
 import com.nicholasbrooking.pkg.schachbe.domain.entity.game.GameUser
 import javax.persistence.*
 
@@ -8,6 +7,10 @@ import javax.persistence.*
 @Table(name = "user")
 data class User(
         @Id
+        @GeneratedValue
+        @Column(nullable = false)
+        val id: Long = 0,
+
         @Column(nullable = false)
         val username: String,
 
@@ -20,11 +23,11 @@ data class User(
         @ManyToMany
         @JoinTable(
                 name = "user_authority",
-                joinColumns = [ JoinColumn(name = "username") ],
+                joinColumns = [ JoinColumn(name = "user_id") ],
                 inverseJoinColumns = [ JoinColumn(name = "user_role") ]
         )
         var userRoles: Set<Authority>,
 
-        @OneToOne(mappedBy = "user", cascade = [CascadeType.ALL])
-        var activeGame: GameUser?
+        @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL])
+        var gameUsers: List<GameUser>
 )

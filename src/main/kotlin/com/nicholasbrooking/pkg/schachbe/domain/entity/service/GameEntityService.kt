@@ -16,19 +16,16 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 class GameEntityService(
-        private val gameRepository: GameRepository,
-        private val gameUserRepository: GameUserRepository,
-        private val gameStartingPositionRepository: GameStartingPositionRepository
+        private val gameRepository: GameRepository
 ) {
     @Transactional
-    fun getAllGameStartingPositionsForUser(username: String): List<GameStartingPosition> {
-        return gameStartingPositionRepository.findAllByCreatorUsername(username)
+    fun getGame(gameId: Long): Game {
+        return gameRepository.findById(gameId)
     }
 
     @Transactional
-    fun getGameStartingPosition(username: String, positionName: String): GameStartingPosition {
-        return gameStartingPositionRepository.getByCreatorUsernameAndPositionName(username, positionName)
-    }
+    fun doesGameExist(gameId: Long): Boolean =
+            gameRepository.existsById(gameId)
 
     @Transactional
     fun createGame(createGameDto: CreateGameDto): Game {
@@ -42,36 +39,12 @@ class GameEntityService(
     }
 
     @Transactional
-    fun createGameUsers(game: Game, gameUsersWithUsesr: Map<GameUserDto, User>) {
-        val gameUsers = gameUsersWithUsesr.map {
-            GameUser(
-                    game = game,
-                    user = it.value,
-                    participationType = it.key.participationType,
-                    colour = it.key.colour
-            )
-        }
-        gameUserRepository.saveAll(gameUsers)
-    }
-
-    @Transactional
-    fun addGameStartingPosition(creatorUsername: String, positionName: String, boardState: BoardState): Long {
-        val gameStartingPosition = GameStartingPosition(
-                creatorUsername = creatorUsername,
-                positionName = positionName,
-                boardState = boardState
-        )
-        gameStartingPositionRepository.save(gameStartingPosition)
-        return gameStartingPosition.id
-    }
-
-    @Transactional
-    fun getAllGamesBy(gameType: GameType, gameState: GameState): List<GameInfoDto> {
+    fun getAllGameInfoDtosBy(gameType: GameType, gameState: GameState): List<GameInfoDto> {
         return gameRepository.findAllByGameTypeAndGameState(gameType, gameState).map { it.toInternalDto() }
     }
 
     @Transactional
-    fun getAllGamesBy(gameType: GameType): List<GameInfoDto> {
+    fun getAllGameInfoDtosBy(gameType: GameType): List<GameInfoDto> {
         return gameRepository.findAllByGameType(gameType).map { it.toInternalDto() }
     }
 }

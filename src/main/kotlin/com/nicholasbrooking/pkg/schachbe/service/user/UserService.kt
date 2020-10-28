@@ -15,7 +15,7 @@ class UserService(
         private val securityService: SecurityService
 ) {
     fun getUserExists(username: String): Boolean {
-        return userRepository.existsById(username)
+        return userRepository.existsByUsername(username)
     }
 
     fun getAllUsers(): List<UserDto> {

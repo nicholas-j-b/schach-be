@@ -7,6 +7,7 @@ import com.nicholasbrooking.pkg.schachbe.service.lobby.LobbyService
 import com.nicholasbrooking.pkg.schachbe.service.mapping.toApiDto
 import com.nicholasbrooking.pkg.schachbe.service.mapping.toInternalDto
 import com.nicholasbrooking.pkg.schachbe.service.mapping.toInternalEnum
+import com.nicholasbrooking.pkg.schachbe.service.mapping.toInternalRequestDto
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.CrossOrigin
@@ -40,7 +41,7 @@ class LobbyController(
 
     override fun joinGame(gameType: GameType, gameId: Long, gameUserDto: GameUserDto): ResponseEntity<String> {
         requestReceiver.schachbeReceive {
-            lobbyService.joinGame(gameType.toInternalEnum(), gameId, gameUserDto.toInternalDto())
+            lobbyService.joinGame(gameType.toInternalEnum(), gameId, gameUserDto.toInternalRequestDto(gameId))
             return ResponseEntity.ok("Success")
         }
     }

@@ -36,6 +36,7 @@ fun com.nicholasbrooking.pkg.schachbe.domain.model.game.GameState.toApiEnum(): G
 
 fun com.nicholasbrooking.pkg.schachbe.domain.model.game.GameInfoDto.toApiDto(): GameInfoDto {
     return GameInfoDto().gameType(this.gameType.toApiEnum())
+            .gameId(this.gameId)
             .gameState(this.gameState.toApiEnum())
             .participants(this.participants.map { it.toApiDto() })
 }

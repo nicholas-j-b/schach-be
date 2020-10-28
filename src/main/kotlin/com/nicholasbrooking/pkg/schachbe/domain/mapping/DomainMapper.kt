@@ -33,6 +33,7 @@ fun UserRole.toDatabaseString(): String {
 
 fun Game.toInternalDto(): GameInfoDto {
     return GameInfoDto(
+            gameId = this.id,
             gameType = this.gameType,
             gameState = this.gameState,
             participants = this.gameUsers.map { it.toInternalDto() }
@@ -42,6 +43,7 @@ fun Game.toInternalDto(): GameInfoDto {
 fun GameUser.toInternalDto(): GameUserDto {
     return GameUserDto(
             username = this.user.username,
+            gameId = this.game.id,
             participationType = this.participationType,
             colour = this.colour
     )

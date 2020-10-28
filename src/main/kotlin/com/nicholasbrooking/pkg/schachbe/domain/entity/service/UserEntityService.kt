@@ -17,12 +17,12 @@ class UserEntityService(
 ) {
     @Transactional
     fun getByUsername(username: String): User {
-        return userRepository.getOne(username)
+        return userRepository.getByUsername(username)
     }
 
     @Transactional
     fun getByUsernames(usernames: List<String>): List<User> {
-        return userRepository.findAllById(usernames)
+        return userRepository.findAllByUsernameIn(usernames)
     }
 
     @Transactional
@@ -51,7 +51,7 @@ class UserEntityService(
                 password = newUserDto.password,
                 enabled = newUserDto.enabled,
                 userRoles = newUserDto.userRoles.mapTo(HashSet()) { Authority(it.toDatabaseString()) },
-                activeGame = null
+                gameUsers = emptyList()
         )
         userRepository.save(user)
     }

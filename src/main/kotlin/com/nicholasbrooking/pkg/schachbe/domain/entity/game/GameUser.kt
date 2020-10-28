@@ -13,11 +13,12 @@ class GameUser(
         @Column(nullable = false)
         val id: Long = 0,
 
-        @ManyToOne
+        @ManyToOne(cascade = [CascadeType.ALL])
         @JoinColumn(name = "game_id")
         val game: Game,
 
-        @OneToOne @MapsId
+        @ManyToOne(cascade = [CascadeType.ALL])
+        @JoinColumn(name = "user_id")
         val user: User,
 
         @Column(nullable = false)

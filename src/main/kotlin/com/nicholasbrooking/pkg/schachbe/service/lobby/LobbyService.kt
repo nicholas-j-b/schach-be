@@ -5,7 +5,6 @@ import com.nicholasbrooking.pkg.schachbe.domain.model.game.*
 import com.nicholasbrooking.pkg.schachbe.service.board.BoardService
 import com.nicholasbrooking.pkg.schachbe.service.exception.auth.SchachbeUserDisallowed
 import com.nicholasbrooking.pkg.schachbe.service.exception.data.SchachbeCannotCreateBoard
-import com.nicholasbrooking.pkg.schachbe.service.exception.data.SchachbeInvalidRoleForUser
 import com.nicholasbrooking.pkg.schachbe.service.game.GameService
 import com.nicholasbrooking.pkg.schachbe.service.user.UserAuthenticationService
 import com.nicholasbrooking.pkg.schachbe.service.util.RandomService
@@ -20,6 +19,8 @@ class LobbyService(
         private val userAuthenticationService: UserAuthenticationService
 ) {
     fun createGame(gameType: GameType, gameRequestDto: GameRequestDto): Long {
+        userAuthenticationService.checkUserIsUsername(gameRequestDto.challengerUsername, SchachbeUserDisallowed::class)
+        gameService.authoriseGameCreate(gameRequestDto)
         val boardStateDto = boardService.createBoardStateDto(gameType)
         val boardId = boardService.createBoardFromState(boardStateDto)
                 ?: throw SchachbeCannotCreateBoard("Schachfish failed to create board")
@@ -31,14 +32,14 @@ class LobbyService(
         val challengerColour = randomService.getRandomColour()
         val challengedColour = Colour.getOtherColour(challengerColour)
         val gameUsers = mutableListOf(
-                GameUserDto(
+                GameUserRequestDto(
                         username = gameRequestDto.challengerUsername,
                         colour = challengerColour,
                         participationType = ParticipationType.PLAYER
                 )
         )
         if (gameRequestDto.challengedUsername.isNotEmpty()) {
-            gameUsers += GameUserDto(
+            gameUsers += GameUserRequestDto(
                     username = gameRequestDto.challengedUsername,
                     colour = challengedColour,
                     participationType = ParticipationType.PLAYER
@@ -60,11 +61,9 @@ class LobbyService(
         return gameService.getAllGameInfoDtosBy(gameType)
     }
 
-    fun joinGame(gameType: GameType, gameId: Long, gameUserDto: GameUserDto) {
-        userAuthenticationService.checkUserIsUsername(gameUserDto.username, SchachbeUserDisallowed())
-        TODO("join game")
-        // set active game of user
-        // add gameuser -> add game to user / user to game
-        // attempt websocket connection
+    fun joinGame(gameType: GameType, gameId: Long, gameUserRequestDto: GameUserRequestDto) {
+        userAuthenticationService.checkUserIsUsername(gameUserRequestDto.username, SchachbeUserDisallowed::class)
+        gameService.authoriseGameJoin(gameId, gameUserRequestDto)
+        gameService.joinGame(gameId, gameUserRequestDto)
     }
 }

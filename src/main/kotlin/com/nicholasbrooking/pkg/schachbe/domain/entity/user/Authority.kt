@@ -1,6 +1,5 @@
 package com.nicholasbrooking.pkg.schachbe.domain.entity.user
 
-import com.nicholasbrooking.pkg.schachbe.domain.model.user.UserRole
 import javax.persistence.*
 
 @Entity

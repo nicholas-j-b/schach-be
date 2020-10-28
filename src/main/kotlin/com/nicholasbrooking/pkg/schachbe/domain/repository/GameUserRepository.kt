@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface GameUserRepository: CrudRepository<GameUser, String> {
+    fun findAllByGameId(gameId: Long): List<GameUser>
 }

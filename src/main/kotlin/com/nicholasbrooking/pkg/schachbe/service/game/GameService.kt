@@ -1,48 +1,69 @@
 package com.nicholasbrooking.pkg.schachbe.service.game
 
-import com.nicholasbrooking.pkg.schachbe.api.model.BoardStateDto
-import com.nicholasbrooking.pkg.schachbe.domain.entity.service.BoardEntityService
 import com.nicholasbrooking.pkg.schachbe.domain.entity.service.GameEntityService
+import com.nicholasbrooking.pkg.schachbe.domain.entity.service.GameUserEntityService
 import com.nicholasbrooking.pkg.schachbe.domain.entity.service.UserEntityService
-import com.nicholasbrooking.pkg.schachbe.domain.model.game.CreateGameDto
-import com.nicholasbrooking.pkg.schachbe.domain.model.game.GameInfoDto
-import com.nicholasbrooking.pkg.schachbe.domain.model.game.GameState
-import com.nicholasbrooking.pkg.schachbe.domain.model.game.GameType
+import com.nicholasbrooking.pkg.schachbe.domain.model.game.*
+import com.nicholasbrooking.pkg.schachbe.service.exception.auth.SchachbeUserDisallowed
 import org.springframework.stereotype.Service
 
 @Service
 @ExperimentalStdlibApi
 class GameService (
         private val gameEntityService: GameEntityService,
-        private val userEntityService: UserEntityService,
-        private val boardEntityService: BoardEntityService
+        private val gameUserEntityService: GameUserEntityService,
+        private val userEntityService: UserEntityService
 ) {
     fun createGame(createGameDto: CreateGameDto): Long {
         val game = gameEntityService.createGame(createGameDto)
-        val gameUsersWithUser = createGameDto.gameUsers.map { it to userEntityService.getByUsername(it.username)}.toMap()
-        gameEntityService.createGameUsers(game, gameUsersWithUser)
+        createGameDto.gameUsers.forEach{
+            joinGame(game.id, it)
+        }
         return game.id
     }
 
-    fun addGameStateForUser(username: String, positionName: String, boardStateDto: BoardStateDto): Long {
-        val boardState = boardEntityService.boardStateDtoToEntity(boardStateDto)
-        return gameEntityService.addGameStartingPosition(username, positionName, boardState)
-    }
-
-    fun getGameStateNamesForUser(username: String): List<String> {
-        return gameEntityService.getAllGameStartingPositionsForUser(username).map { it.positionName }
-    }
-
-    fun getGameState(username: String, positionName: String): BoardStateDto {
-        val boardState = gameEntityService.getGameStartingPosition(username, positionName).boardState
-        return boardEntityService.boardStateEntityToDto(boardState)
+    fun joinGame(gameId: Long, gameUserRequestDto: GameUserRequestDto) {
+        val game = gameEntityService.getGame(gameId)
+        val user = userEntityService.getByUsername(gameUserRequestDto.username)
+        gameUserEntityService.createGameUsers(game, gameUserRequestDto, user)
     }
 
     fun getAllGameInfoDtosBy(gameType: GameType, gameState: GameState): List<GameInfoDto> {
-        return gameEntityService.getAllGamesBy(gameType, gameState)
+        return gameEntityService.getAllGameInfoDtosBy(gameType, gameState)
     }
 
     fun getAllGameInfoDtosBy(gameType: GameType): List<GameInfoDto> {
-        return gameEntityService.getAllGamesBy(gameType)
+        return gameEntityService.getAllGameInfoDtosBy(gameType)
+    }
+
+    fun authoriseGameCreate(gameRequestDto: GameRequestDto) {
+        val usernamesInChallenge = listOf(gameRequestDto.challengerUsername, gameRequestDto.challengedUsername)
+        if (userEntityService.getByUsernames(usernamesInChallenge).size != usernamesInChallenge.size) {
+            throw SchachbeUserDisallowed("A chosen User does not exist")
+        }
+    }
+
+    fun authoriseGameJoin(gameId: Long, gameUserRequestDto: GameUserRequestDto) {
+        if (!gameEntityService.doesGameExist(gameId)) {
+            throw SchachbeUserDisallowed("Game does not exist")
+        }
+        if (gameUserEntityService.isUserInGame(gameUserRequestDto.username, gameId)) {
+            throw SchachbeUserDisallowed("User not permitted to join game more than once")
+        }
+        val authorised = when (gameUserRequestDto.participationType) {
+            ParticipationType.SPECTATOR -> true
+            ParticipationType.PLAYER -> authoriseJoinAsPlayer(gameId)
+        }
+        if (!authorised) {
+            throw SchachbeUserDisallowed("User not permitted to join game")
+        }
+    }
+
+    private fun authoriseJoinAsPlayer(gameId: Long): Boolean {
+        val existingGameUsers = gameUserEntityService.getAllGameUsersForGame(gameId)
+        val numPlayersInGame = existingGameUsers.filter {
+            it.participationType == ParticipationType.PLAYER
+        }.size
+        return numPlayersInGame < 2
     }
 }

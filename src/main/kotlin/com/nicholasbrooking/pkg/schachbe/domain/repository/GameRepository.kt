@@ -10,4 +10,6 @@ import org.springframework.stereotype.Repository
 interface GameRepository: CrudRepository<Game, String> {
     fun findAllByGameTypeAndGameState(gameType: GameType, gameState: GameState): List<Game>
     fun findAllByGameType(gameType: GameType): List<Game>
+    fun findById(id: Long): Game
+    fun existsById(id: Long): Boolean
 }

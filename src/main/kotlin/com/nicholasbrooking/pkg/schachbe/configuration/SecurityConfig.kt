@@ -20,9 +20,11 @@ class SecurityConfig(
     private val getUserQueryString =
             "SELECT username, password, enabled FROM user WHERE username = ?"
     private val getAuthoritiesByUserQueryString =
-            "SELECT ua.username, ua.user_role " +
-                    "FROM user_authority ua " +
-                    "WHERE ua.username = ?"
+            "SELECT u.username, ua.user_role " +
+                    "FROM user u " +
+                    "JOIN user_authority ua " +
+                    "ON u.id=ua.user_id " +
+                    "WHERE u.username = ?"
 
     override fun configure(http: HttpSecurity) {
         http
